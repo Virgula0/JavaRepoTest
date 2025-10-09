@@ -13,7 +13,7 @@ public class AppTest {
 	
 	@Before
 	public void setup() {
-		app = new App();
+		app = new App(); 
 	}
 	
 	@Test
