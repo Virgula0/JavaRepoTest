@@ -29,4 +29,4 @@ jobs:
           java-version: 1.8
         
       - name: Build with Maven
-        run: mvn -f com.example.progetto.angelo.rosa.test/pom.xml clean verify
+        run: mvn -f com.example.progetto.angelo.rosa.test/pom.xml clean verify 
