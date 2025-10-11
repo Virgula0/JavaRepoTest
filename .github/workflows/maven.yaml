@@ -62,5 +62,5 @@ jobs:
         if: ${{ matrix.generate-jacoco == 1 }}
         uses: actions/upload-artifact@v4
         with:
-          name: surefire-report-jdk-${{ matrix.java }}
+          name: surefire-report-jdk-${{ matrix.java }}-${{ matrix.os }}
           path: '**/target/site/jacoco'
