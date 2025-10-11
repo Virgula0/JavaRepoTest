@@ -24,6 +24,7 @@ jobs:
         include:
           - java: 8
             additional-maven-args: "-Pjacoco"
+            generate-jacoco: 1
           - java: 11
         exclude:
           - os: windows-latest
@@ -58,6 +59,7 @@ jobs:
           surefire-report:report-only site:site -DgenerateReports=false
 
       - name: Archive JUnit Report
+        if: ${{ matrix.generate-jacoco == 1 }}
         uses: actions/upload-artifact@v4
         with:
           name: surefire-report-jdk-${{ matrix.java }}
