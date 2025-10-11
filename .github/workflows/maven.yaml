@@ -24,11 +24,11 @@ jobs:
           - java: 8
             additional-maven-args: "-Pjacoco"
           - java: 11
-      exclude:
-        - os: macos-latest
-          java: 11
-        - os: windows-latest
-          java: 11
+        exclude:
+          - os: macos-latest
+            java: 11
+          - os: windows-latest
+            java: 11
 
     name: Build with Java ${{ matrix.java }}
     steps:
