@@ -12,11 +12,25 @@ on:
       - synchronize
 
 jobs:
-  build:    
+  build:
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - java: 8
+            additional-maven-args: "-Pjacoco"
+          - java: 11
+      exclude:
+        - os: macos-latest
+          java: 11
+        - os: windows-latest
+          java: 11
+
+    name: Build with Java ${{ matrix.java }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,6 +41,22 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2-
         
       - name: Build with Maven
-        run: mvn -f com.example.progetto.angelo.rosa.test/pom.xml clean verify 
+        run: > 
+        mvn -f com.example.progetto.angelo.rosa.test/pom.xml 
+        clean verify ${{ matrix.additional-maven-args }}
+        surefire-report:report-only site:site -DgenerateReports=false
+
+      - name: Archive JUnit Report
+        uses: actions/upload-artifact@v2
+        with:
+        name: surefire-report-jdk-${{ matrix.java }}
+        path: '**/target/reports
