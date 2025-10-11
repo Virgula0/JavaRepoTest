@@ -31,7 +31,7 @@ jobs:
           - os: windows-latest
             java: 11
 
-    name: Build with Java ${{ matrix.java }}
+    name: Build with Java ${{ matrix.java }} on ${{ matrix.os }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -44,7 +44,7 @@ jobs:
           java-version: 1.8
 
       - name: Cache Maven packages
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
