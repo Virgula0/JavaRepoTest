@@ -61,4 +61,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: surefire-report-jdk-${{ matrix.java }}
-          path: '**/target/reports'
+          path: '**/target/site/jacoco'
