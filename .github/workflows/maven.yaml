@@ -51,9 +51,9 @@ jobs:
         
       - name: Build with Maven
         run: > 
-        mvn -f com.example.progetto.angelo.rosa.test/pom.xml 
-        clean verify ${{ matrix.additional-maven-args }}
-        surefire-report:report-only site:site -DgenerateReports=false
+          mvn -f com.example.progetto.angelo.rosa.test/pom.xml 
+          clean verify ${{ matrix.additional-maven-args }}
+          surefire-report:report-only site:site -DgenerateReports=false
 
       - name: Archive JUnit Report
         uses: actions/upload-artifact@v2
