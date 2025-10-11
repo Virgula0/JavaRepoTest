@@ -38,10 +38,11 @@ jobs:
         with:
           submodules: recursive
       
-      - name: Set up JDK 8
+      - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.java }}
+          distribution: 'oracle'
 
       - name: Cache Maven packages
         uses: actions/cache@v4
