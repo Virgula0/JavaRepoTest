@@ -23,7 +23,7 @@ jobs:
         java: [8, 11]
         include:
           - java: 8
-            additional-maven-args: "-Pjacoco"
+            additional-maven-args: "-Pjacoco -DrepoToken=$COVERALLS_REPO_TOKEN coveralls:report"
             generate-jacoco: 1
           - java: 11
         exclude:
@@ -57,6 +57,8 @@ jobs:
           mvn -f com.example.progetto.angelo.rosa.test/pom.xml 
           clean verify ${{ matrix.additional-maven-args }}
           surefire-report:report-only site:site -DgenerateReports=false
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
       - name: Archive JUnit Report
         if: ${{ matrix.generate-jacoco == 1 && matrix.os == 'ubuntu-latest'}}
