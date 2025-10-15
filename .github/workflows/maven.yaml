@@ -54,7 +54,6 @@ jobs:
         
       - name: Build with Maven
         run: >
-          echo $COVERALLS_REPO_TOKEN
           mvn -f com.example.progetto.angelo.rosa.test/pom.xml
           clean verify surefire-report:report-only site:site jacoco:report coveralls:report -DgenerateReports=false
         env:
