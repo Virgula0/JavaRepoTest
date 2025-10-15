@@ -60,7 +60,6 @@ jobs:
       - name: Generate Jacoco and upload to Coveralls
         if: ${{ matrix.generate-jacoco == 1 && matrix.os == 'ubuntu-latest' }}
         run: >
-          echo $COVERALLS_REPO_TOKEN
           mvn -f com.example.progetto.angelo.rosa.test/pom.xml
           clean verify jacoco:report coveralls:report
         env:
