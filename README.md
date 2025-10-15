@@ -1,0 +1,1 @@
+[![Coverage Status](https://coveralls.io/repos/github/Virgula0/JavaRepoTest/badge.svg)](https://coveralls.io/github/Virgula0/JavaRepoTest)
