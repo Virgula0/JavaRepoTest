@@ -23,7 +23,7 @@ jobs:
         java: [8, 11]
         include:
           - java: 8
-            additional-maven-args: "-DrepoToken=${{ secrets.COVERALLS_REPO_TOKEN }} coveralls:report" 
+            additional-maven-args: "-DrepoToken=$COVERALLS_REPO_TOKEN coveralls:report" 
           - java: 11
         exclude:
           - os: windows-latest
@@ -55,6 +55,8 @@ jobs:
         run: >
           mvn -f com.example.progetto.angelo.rosa.test/pom.xml
           clean verify surefire-report:report-only ${{ matrix.additional-maven-args }}
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
       - name: Archive JUnit Report
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == 8 }}
