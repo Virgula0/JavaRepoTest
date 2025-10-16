@@ -7,3 +7,7 @@ test:
 run-pit:
 	mvn test org.pitest:pitest-maven:mutationCoverage -f $(POM_PATH)
 .PHONY: run-pit
+
+package:
+	mvn package -f $(POM_PATH)
+.PHONY: package
