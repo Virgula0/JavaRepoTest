@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-public class AppTest2 {
+public class PPTest {
 
 	@Test
 	public void test() {

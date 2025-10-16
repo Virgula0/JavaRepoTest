@@ -7,6 +7,8 @@ import org.junit.Test;
 
 /**
  * Unit test for simple App.
+ * to run succesfully classes in maven build and let maven to see this class as test
+ * the class name must end with the name Test
  */
 public class AppTest {
 	private App app;
