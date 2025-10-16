@@ -59,7 +59,7 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
       - name: Archive JUnit Report
-        if: ${{ matrix.generate-jacoco == 1 && matrix.os == 'ubuntu-latest'}}
+        if: ${{ matrix.os == 'ubuntu-latest'}}
         uses: actions/upload-artifact@v4
         with:
           name: surefire-report-jdk-${{ matrix.java }}-${{ matrix.os }}
