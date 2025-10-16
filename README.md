@@ -1,4 +1,2 @@
 [![Coverage Status](https://coveralls.io/repos/github/Virgula0/JavaRepoTest/badge.svg)](https://coveralls.io/github/Virgula0/JavaRepoTest)
-[![Maven build Java 11 - Windows](https://github.com/Virgula0/JavaRepoTest/actions/workflows/maven.yaml/badge.svg)](https://github.com/Virgula0/JavaRepoTest/actions/workflows/maven.yaml)
-[![Maven build Java 8 - Ubuntu Latest](https://github.com/Virgula0/JavaRepoTest/actions/workflows/maven.yaml/badge.svg)](https://github.com/Virgula0/JavaRepoTest/actions/workflows/maven.yaml)
-[![Maven build Java 8 - Windows Latest](https://github.com/Virgula0/JavaRepoTest/actions/workflows/maven.yaml/badge.svg)](https://github.com/Virgula0/JavaRepoTest/actions/workflows/maven.yaml)
+[![Maven build Java CI](https://github.com/Virgula0/JavaRepoTest/actions/workflows/maven.yaml/badge.svg)](https://github.com/Virgula0/JavaRepoTest/actions/workflows/maven.yaml)
