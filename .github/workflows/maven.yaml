@@ -22,9 +22,9 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         java: [8, 11]
         include:
-          - java: 8
-            additional-maven-args: "-Pjacoco"
-            generate-jacoco: 1
+          - os: ubuntu-latest
+            java: 8
+            additional-maven-args: "-DrepoToken=$COVERALLS_REPO_TOKEN coveralls:report" 
           - java: 11
         exclude:
           - os: windows-latest
@@ -52,14 +52,15 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/*.yml') }}
           restore-keys: ${{ runner.os }}-m2-
         
-      - name: Build with Maven
-        run: > 
-          mvn -f com.example.progetto.angelo.rosa.test/pom.xml 
-          clean verify ${{ matrix.additional-maven-args }}
-          surefire-report:report-only site:site -DgenerateReports=false
+      - name: Build with Maven ${{ matrix.os }} on Java ${{ matrix.java }}
+        run: >
+          mvn -f com.example.progetto.angelo.rosa.test/pom.xml
+          verify surefire-report:report-only ${{ matrix.additional-maven-args }}
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
       - name: Archive JUnit Report
-        if: ${{ matrix.generate-jacoco == 1 && matrix.os == 'ubuntu-latest'}}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == 8 }}
         uses: actions/upload-artifact@v4
         with:
           name: surefire-report-jdk-${{ matrix.java }}-${{ matrix.os }}

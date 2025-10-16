@@ -9,4 +9,8 @@ public class App
     public String sayHello() {
     	return "Hello";
     }
+    
+    public String sayHello2() {
+    	return "";
+    }
 }
