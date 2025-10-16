@@ -19,14 +19,14 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - run: mvn dependency:go-offline
+      - run: mvn -f com.example.progetto.angelo.rosa.test/pom.xml dependency:go-offline
 
-      - run: mvn verify
+      - run: mvn -f com.example.progetto.angelo.rosa.test/pom.xml verify
 
       - name: Get version from pom.xml
         id: get_version
         run: |
-          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          VERSION=$(mvn -f com.example.progetto.angelo.rosa.test/pom.xml help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Create prerelease
