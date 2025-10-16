@@ -1,10 +1,9 @@
-name: Create Prerelease on Main Merge
+name: Create Prerelease
 
 on:
   push:
     branches:
       - main
-  pull_request:
 
 jobs:
   prerelease:
