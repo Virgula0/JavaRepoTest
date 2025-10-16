@@ -54,7 +54,8 @@ jobs:
         
       - name: Build with Maven ${{ matrix.os }} on Java ${{ matrix.java }}
         run: >
-          make ci ${{ matrix.additional-maven-args }}
+          mvn -f com.example.progetto.angelo.rosa.test/pom.xml
+          clean verify surefire-report:report-only ${{ matrix.additional-maven-args }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
