@@ -24,7 +24,7 @@ jobs:
         include:
           - os: ubuntu-latest
             java: 8
-            additional-maven-args: "-DrepoToken=$COVERALLS_REPO_TOKEN coveralls:report" 
+            additional-maven-args: "-DrepoToken=$COVERALLS_REPO_TOKEN coveralls:report org.pitest:pitest-maven:mutationCoverage" # run PIT mutation test once 
           - java: 11
         exclude:
           - os: windows-latest
