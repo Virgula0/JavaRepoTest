@@ -19,6 +19,16 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2
+            ~/.sonar/cache
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/*.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-
+
       - run: mvn -f com.example.progetto.angelo.rosa.test/pom.xml dependency:go-offline
 
       - run: mvn -f com.example.progetto.angelo.rosa.test/pom.xml verify
@@ -36,3 +46,5 @@ jobs:
           name: "Pre-release ${{ steps.get_version.outputs.version }}-pre-${{ github.run_number }}"
           prerelease: true
           commit: ${{ github.sha }}
+          artifacts: "com.example.progetto.angelo.rosa.test/target/*.jar"
+
