@@ -20,4 +20,9 @@ public class AppTest {
 	public void testSayHello() {
 		assertEquals("Hello", app.sayHello());
 	}
+	
+	@Test
+	public void testSayHello2() {
+		assertEquals("", app.sayHello2());
+	}
 }
