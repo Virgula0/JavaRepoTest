@@ -25,7 +25,9 @@
 		<pit.version>1.5.2</pit.version>
 		<pit.target.class>com.example.progetto.angelo.rosa.*</pit.target.class>
 		<pit.target.test>com.example.progetto.angelo.rosa.*</pit.target.test>
-		<pit.exclusions>com.example.progetto.angelo.rosa.main.*</pit.exclusions>
+		<pit.exclusions>
+			com.example.progetto.angelo.rosa.main.*
+		</pit.exclusions>
 		<jacoco.exclusions>
 			com/example/progetto/angelo/rosa/main/*
 		</jacoco.exclusions>
