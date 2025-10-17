@@ -25,6 +25,9 @@
 		<pit.version>1.5.2</pit.version>
 		<pit.target.class>com.example.progetto.angelo.rosa.*</pit.target.class>
 		<pit.target.test>com.example.progetto.angelo.rosa.*</pit.target.test>
+		<jacoco.exclusions>
+			com/example/progetto/angelo/rosa/main/*
+		</jacoco.exclusions>
 	</properties>
 
 	<dependencies>
@@ -109,6 +112,11 @@
 							<goal>prepare-agent</goal>
 							<goal>report</goal>
 						</goals>
+						<configuration>
+							<excludes>
+								<exclude>${jacoco.exclusions}</exclude>
+							</excludes>
+						</configuration>
 					</execution>
 					<execution>
 						<id>jacoco-check</id>
@@ -116,6 +124,9 @@
 							<goal>check</goal>
 						</goals>
 						<configuration>
+							<excludes>
+								<exclude>${jacoco.exclusions}</exclude>
+							</excludes>
 							<rules>
 								<rule>
 									<element>PACKAGE</element>
