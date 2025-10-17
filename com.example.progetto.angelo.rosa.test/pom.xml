@@ -25,6 +25,12 @@
 		<pit.version>1.5.2</pit.version>
 		<pit.target.class>com.example.progetto.angelo.rosa.*</pit.target.class>
 		<pit.target.test>com.example.progetto.angelo.rosa.*</pit.target.test>
+		<pit.exclusions>
+			com.example.progetto.angelo.rosa.main.*
+		</pit.exclusions>
+		<jacoco.exclusions>
+			com/example/progetto/angelo/rosa/main/*
+		</jacoco.exclusions>
 	</properties>
 
 	<dependencies>
@@ -71,14 +77,14 @@
 					<version>${pit.version}</version>
 					<configuration>
 						<targetClasses>
-							<!-- excludes testing.example.bank.app.Main 
-								<param>testing.example.bank.Bank*</param>
-							-->
 							<param>${pit.target.class}</param>
 						</targetClasses>
 						<targetTests>
 							<param>${pit.target.test}</param>
 						</targetTests>
+						<excludedClasses>
+							<param>${pit.exclusions}</param>
+						</excludedClasses>
 						<mutators>
 							<mutator>DEFAULTS</mutator>
 						</mutators>
@@ -109,6 +115,11 @@
 							<goal>prepare-agent</goal>
 							<goal>report</goal>
 						</goals>
+						<configuration>
+							<excludes>
+								<exclude>${jacoco.exclusions}</exclude>
+							</excludes>
+						</configuration>
 					</execution>
 					<execution>
 						<id>jacoco-check</id>
@@ -116,6 +127,9 @@
 							<goal>check</goal>
 						</goals>
 						<configuration>
+							<excludes>
+								<exclude>${jacoco.exclusions}</exclude>
+							</excludes>
 							<rules>
 								<rule>
 									<element>PACKAGE</element>
