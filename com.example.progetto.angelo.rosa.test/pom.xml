@@ -12,9 +12,12 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
+	    <!-- Java version -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		
+		<!-- Deps versions -->
 		<junit.version>4.13</junit.version>
 		<assertj.version>3.15.0</assertj.version>
 		<mockito.version>3.2.4</mockito.version>
@@ -22,15 +25,24 @@
 		<maven.surefire.report-version>2.22.2</maven.surefire.report-version>
 		<maven.site.version>3.9.1</maven.site.version>
 		<coveralls.version>4.3.0</coveralls.version>
+		<mongodb.version>3.12.7</mongodb.version>
 		<pit.version>1.5.2</pit.version>
+		
+		<!-- Project vars -->
 		<pit.target.class>com.example.progetto.angelo.rosa.*</pit.target.class>
 		<pit.target.test>com.example.progetto.angelo.rosa.*</pit.target.test>
+		<main.class>com.example.progetto.angelo.rosa.main.Main</main.class> <!-- do not append .java extension -->
+		
+		<!-- Jacoco and PIT exclusions -->
+		
 		<pit.exclusions>
 			com.example.progetto.angelo.rosa.main.*
 		</pit.exclusions>
+		
 		<jacoco.exclusions>
 			com/example/progetto/angelo/rosa/main/*
 		</jacoco.exclusions>
+		
 	</properties>
 
 	<dependencies>
@@ -51,6 +63,11 @@
 			<artifactId>mockito-core</artifactId>
 			<version>${mockito.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>${mongodb.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -94,6 +111,29 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<!-- Fat jar with db drivers -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<archive>
+								<manifest>
+									<mainClass>${main.class}</mainClass> 
+								</manifest>
+							</archive>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-report-plugin</artifactId>
 				<version>${maven.surefire.report-version}</version>

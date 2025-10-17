@@ -1,0 +1,26 @@
+networks:
+  angelo-rosa-network:
+    driver: bridge
+
+services:
+  mongodb:
+    image: mongo:4.4.3
+    container_name: mongodb
+    networks:
+      - angelo-rosa-network
+
+  java-app:
+    build:
+      context: com.example.progetto.angelo.rosa.test
+      dockerfile: Dockerfile
+    container_name: java-app
+    depends_on:
+      - mongodb
+    networks:
+      - angelo-rosa-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 1

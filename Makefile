@@ -11,3 +11,13 @@ run-pit:
 package:
 	mvn package -f $(POM_PATH)
 .PHONY: package
+
+docker-build:
+	docker compose up --build 
+.PHONY: docker-build
+
+docker-stop:
+	docker compose down -v 
+.PHONY: docker-stop
+
+compile-and-setup: package docker-build
