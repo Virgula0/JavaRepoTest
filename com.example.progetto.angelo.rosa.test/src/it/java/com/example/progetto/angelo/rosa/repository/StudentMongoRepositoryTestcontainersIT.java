@@ -21,7 +21,9 @@ public class StudentMongoRepositoryTestcontainersIT {
 
 	@SuppressWarnings({ "rawtypes", "resource" })
 	@ClassRule
-	public static final GenericContainer mongo = new GenericContainer("mongo:4.4.3").withExposedPorts(27017);
+	public static final GenericContainer mongo = new GenericContainer(
+			StudentMongoRepository.IMAGE + ":" + StudentMongoRepository.VERSION)
+			.withExposedPorts(StudentMongoRepository.PORT);
 
 	private MongoClient client;
 	private StudentMongoRepository studentRepository;
@@ -30,7 +32,7 @@ public class StudentMongoRepositoryTestcontainersIT {
 	private void addTestStudentToDatabase(String id, String name) {
 		studentCollection.insertOne(new Document().append("id", id).append("name", name));
 	}
-	
+
 	@Before
 	public void setup() {
 		client = new MongoClient(new ServerAddress(mongo.getContainerIpAddress(), mongo.getMappedPort(27017)));
@@ -50,7 +52,7 @@ public class StudentMongoRepositoryTestcontainersIT {
 	public void testFindAll() {
 		addTestStudentToDatabase("1", "test1");
 		addTestStudentToDatabase("2", "test2");
-		
+
 		assertThat(studentRepository.findAll()).containsExactly(new Student("1", "test1"), new Student("2", "test2"));
 	}
 
@@ -58,7 +60,7 @@ public class StudentMongoRepositoryTestcontainersIT {
 	public void testFindById() {
 		addTestStudentToDatabase("1", "test1");
 		addTestStudentToDatabase("2", "test2");
-		
+
 		assertThat(studentRepository.findById("2")).isEqualTo(new Student("2", "test2"));
 	}
 }

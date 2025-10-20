@@ -37,7 +37,9 @@ public class SchoolControllerIT {
 
 	@SuppressWarnings({ "rawtypes", "resource" })
 	@ClassRule
-	public static final GenericContainer mongo = new GenericContainer("mongo:4.4.3").withExposedPorts(27017);
+	public static final GenericContainer mongo = new GenericContainer(
+			StudentMongoRepository.IMAGE + ":" + StudentMongoRepository.VERSION)
+			.withExposedPorts(StudentMongoRepository.PORT);
 	private static MongoClient client;
 	private static MongoDatabase database;
 

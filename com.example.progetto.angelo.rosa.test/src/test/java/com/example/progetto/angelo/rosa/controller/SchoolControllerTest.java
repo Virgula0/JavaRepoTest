@@ -19,15 +19,14 @@ import com.example.progetto.angelo.rosa.repository.StudentRepository;
 import com.example.progetto.angelo.rosa.view.StudentView;
 
 /**
- * Unit test for simple App.
- * to run succesfully classes in maven build and let maven to see this class as test
- * the class name must end with the name Test
+ * Unit test for simple App. to run succesfully classes in maven build and let
+ * maven to see this class as test the class name must end with the name Test
  */
 public class SchoolControllerTest {
-	
+
 	/*
-	 * Here we mock what we will test with integration tests and eventually e2e. Let's avoid 
-	 * e2e testing 
+	 * Here we mock what we will test with integration tests and eventually e2e.
+	 * Let's avoid e2e testing
 	 */
 
 	@Mock

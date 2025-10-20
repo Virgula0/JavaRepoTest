@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Student {
 	private String id;
 	private String name;
-	
+
 	public Student(String id, String name) {
 		// TODO Auto-generated constructor stub
 		this.id = id;
@@ -16,7 +16,7 @@ public class Student {
 		// TODO Auto-generated method stub
 		return this.id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}

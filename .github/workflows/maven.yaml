@@ -25,7 +25,7 @@ jobs:
           - os: ubuntu-latest
             java: 17
             additional-maven-args: "-DrepoToken=$COVERALLS_REPO_TOKEN coveralls:report -Pintegration-tests org.pitest:pitest-maven:mutationCoverage " # run PIT mutation test once along with integration tests
-            integration-tests: with PIT ans integration tests
+            integration-tests: with PIT and integration tests
           - java: 21
         exclude:
           - os: windows-latest
@@ -61,7 +61,7 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
       - name: Archive JUnit Report
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == 8 }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == 17 }}
         uses: actions/upload-artifact@v4
         with:
           name: surefire-report-jdk-${{ matrix.java }}-${{ matrix.os }}
