@@ -48,13 +48,4 @@ public class SchoolController {
 		studentRepository.delete(student.getId());
 		studentView.studentRemoved(student);
 	}
-	
-	public int we() {
-		int a =1;
-		if (a ==1) {
-			return 0;
-		}
-		
-		return -1;
-	}
 }
