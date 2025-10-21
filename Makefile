@@ -13,7 +13,7 @@ run-pit:
 .PHONY: run-pit
 
 package:
-	mvn package -f $(POM_PATH)
+	mvn clean package -f $(POM_PATH)
 .PHONY: package
 
 docker-build:

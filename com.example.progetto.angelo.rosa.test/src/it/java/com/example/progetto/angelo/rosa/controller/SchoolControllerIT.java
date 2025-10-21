@@ -45,7 +45,7 @@ public class SchoolControllerIT {
 
 	@BeforeClass
 	public static void beforeClassSetup() {
-		client = new MongoClient(new ServerAddress(mongo.getContainerIpAddress(), mongo.getMappedPort(27017)));
+		client = new MongoClient(new ServerAddress(mongo.getContainerIpAddress(), mongo.getMappedPort(StudentMongoRepository.PORT)));
 		database = client.getDatabase(StudentMongoRepository.SCHOOL_DB_NAME);
 	}
 
