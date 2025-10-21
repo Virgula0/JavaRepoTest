@@ -16,6 +16,8 @@ import com.mongodb.*;
 
 /*
  * Integration tests are meant to test only positive cases, negative ones should be handled by junit tests already
+ * IMPORTANT: integration tests on repository are different from junit tests on repository
+ * in both we can use test containers, eventually you can use memory database in junit test for testing repository
  */
 public class StudentMongoRepositoryTestcontainersIT {
 
