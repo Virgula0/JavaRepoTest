@@ -24,17 +24,20 @@ jobs:
         include:
           - os: ubuntu-latest
             java: 17
-            # run PIT mutation test once along with integration tests, e2e, coveralls and surefire report plugin generation on ubuntu
+            # run PIT mutation test once along with integration tests, jacoco, e2e, coveralls and surefire report plugin generation on ubuntu
             maven-cmd: "mvn verify -f com.example.progetto.angelo.rosa.test/pom.xml surefire-report:report-only -DrepoToken=$COVERALLS_REPO_TOKEN coveralls:report -Pintegration-tests org.pitest:pitest-maven:mutationCoverage"
             integration-tests: with PIT and integration tests
           - java: 21
-            # junit only for java 21
+            # junit only for java 21 on ubuntu
             maven-cmd: "mvn test -f com.example.progetto.angelo.rosa.test/pom.xml"
           - os: windows-latest
             java: 17
-            # run PIT mutation test once along with integration tests, e2e on windows
-            maven-cmd: "mvn verify -f com.example.progetto.angelo.rosa.test/pom.xml -Pintegration-tests org.pitest:pitest-maven:mutationCoverage"
-            integration-tests: with PIT and integration tests
+            # junit only for java 17 on windows
+            maven-cmd: "mvn test -f com.example.progetto.angelo.rosa.test/pom.xml"
+        exclude:
+          # skip java 21 on windows 
+          - os: windows-latest
+            java: 21
 
     name: Build with Java ${{ matrix.java }} on ${{ matrix.os }}
     steps:
