@@ -31,13 +31,8 @@ jobs:
             # junit only for java 21 on ubuntu
             maven-cmd: "mvn test -f com.example.progetto.angelo.rosa.test/pom.xml"
           - os: windows-latest
-            java: 17
-            # junit only for java 17 on windows
+            # junit only for java on windows
             maven-cmd: "mvn test -f com.example.progetto.angelo.rosa.test/pom.xml"
-        exclude:
-          # skip java 21 on windows 
-          - os: windows-latest
-            java: 21
 
     name: Build with Java ${{ matrix.java }} on ${{ matrix.os }}
     steps:
