@@ -20,15 +20,19 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        java: [8, 11]
+        java: [17, 21]
         include:
           - os: ubuntu-latest
-            java: 8
-            additional-maven-args: "-DrepoToken=$COVERALLS_REPO_TOKEN coveralls:report org.pitest:pitest-maven:mutationCoverage" # run PIT mutation test once 
-          - java: 11
-        exclude:
+            java: 17
+            # run PIT mutation test once along with integration tests, jacoco, e2e, coveralls and surefire report plugin generation on ubuntu
+            maven-cmd: "mvn verify -f com.example.progetto.angelo.rosa.test/pom.xml surefire-report:report-only -DrepoToken=$COVERALLS_REPO_TOKEN coveralls:report -Pintegration-tests org.pitest:pitest-maven:mutationCoverage"
+            integration-tests: with PIT and integration tests
+          - java: 21
+            # junit only for java 21 on ubuntu
+            maven-cmd: "mvn test -f com.example.progetto.angelo.rosa.test/pom.xml"
           - os: windows-latest
-            java: 11
+            # junit only for java on windows
+            maven-cmd: "mvn test -f com.example.progetto.angelo.rosa.test/pom.xml"
 
     name: Build with Java ${{ matrix.java }} on ${{ matrix.os }}
     steps:
@@ -52,15 +56,14 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/*.yml') }}
           restore-keys: ${{ runner.os }}-m2-
         
-      - name: Build with Maven ${{ matrix.os }} on Java ${{ matrix.java }}
+      - name: Build with Maven ${{ matrix.os }} on Java ${{ matrix.java }} ${{ matrix.integration-tests }}
         run: >
-          mvn -f com.example.progetto.angelo.rosa.test/pom.xml
-          verify surefire-report:report-only ${{ matrix.additional-maven-args }}
+          ${{ matrix.maven-cmd }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
       - name: Archive JUnit Report
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == 8 }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.java == 17 }}
         uses: actions/upload-artifact@v4
         with:
           name: surefire-report-jdk-${{ matrix.java }}-${{ matrix.os }}

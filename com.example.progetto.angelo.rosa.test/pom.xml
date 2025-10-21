@@ -12,38 +12,88 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
-	    <!-- Java version -->
+		<!-- Java version -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+
 		<!-- Deps versions -->
 		<junit.version>4.13</junit.version>
 		<assertj.version>3.15.0</assertj.version>
-		<mockito.version>3.2.4</mockito.version>
-		<jacoco.version>0.8.6</jacoco.version>
-		<maven.surefire.report-version>2.22.2</maven.surefire.report-version>
+		<mockito.version>5.12.0</mockito.version>
+		<jacoco.version>0.8.14</jacoco.version>
+		<maven.surefire.report-version>2.22.2</maven.surefire.report-version> <!--
+		junit tests, this is just for the report, surefire is enabled in maven
+		by default differently from failsafe-->
+		<maven.failsafe.version>2.22.1</maven.failsafe.version> <!-- failsafe:
+		integration tests -->
+
 		<maven.site.version>3.9.1</maven.site.version>
 		<coveralls.version>4.3.0</coveralls.version>
 		<mongodb.version>3.12.7</mongodb.version>
-		<pit.version>1.5.2</pit.version>
-		
+		<pit.version>1.21.0</pit.version>
+		<maven.compiler.version>3.11.0</maven.compiler.version>
+		<qos.logback.version>1.2.3</qos.logback.version>
+		<build.helper.maven.version>3.0.0</build.helper.maven.version> <!--
+		useful for different source folders for integration tests and e2e tests -->
+		<testcontainers.version>1.15.1</testcontainers.version>
+
 		<!-- Project vars -->
 		<pit.target.class>com.example.progetto.angelo.rosa.*</pit.target.class>
 		<pit.target.test>com.example.progetto.angelo.rosa.*</pit.target.test>
-		<main.class>com.example.progetto.angelo.rosa.main.Main</main.class> <!-- do not append .java extension -->
-		
+		<main.class>com.example.progetto.angelo.rosa.main.Main</main.class> <!--
+		do not append .java extension -->
+
 		<!-- Jacoco and PIT exclusions -->
-		
+
 		<pit.exclusions>
 			com.example.progetto.angelo.rosa.main.*
 		</pit.exclusions>
-		
+
 		<jacoco.exclusions>
-			com/example/progetto/angelo/rosa/main/*
+			com/example/progetto/angelo/rosa/main/*, com/example/progetto/angelo/rosa/model/*
 		</jacoco.exclusions>
-		
+
+		<!-- ENV VARS -->
+
+		<mongo.image>mongo</mongo.image>
+		<mongo.version>4.4.3</mongo.version>
+		<mongo.port>27017</mongo.port>
+		<mongo.dbname>testdb</mongo.dbname>
+
 	</properties>
+
+	<profiles>
+		<profile>
+			<id>integration-tests</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<version>${maven.failsafe.version}</version>
+						<configuration>
+							<systemPropertyVariables>
+								<mongo.image>${mongo.image}</mongo.image>
+								<mongo.version>${mongo.version}</mongo.version>
+								<mongo.port>${mongo.port}</mongo.port>
+								<mongo.dbname>${mongo.dbname}</mongo.dbname>
+							</systemPropertyVariables>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 
 	<dependencies>
 		<dependency>
@@ -68,6 +118,18 @@
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
 			<version>${mongodb.version}</version>
+		</dependency>
+		<dependency>
+			<!-- required to see Mongo Java Driver logs -->
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${qos.logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -111,6 +173,25 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>${build.helper.maven.version}</version>
+				<executions>
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/it/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<!-- Fat jar with db drivers -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -127,7 +208,7 @@
 							</descriptorRefs>
 							<archive>
 								<manifest>
-									<mainClass>${main.class}</mainClass> 
+									<mainClass>${main.class}</mainClass>
 								</manifest>
 							</archive>
 						</configuration>

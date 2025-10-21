@@ -1,15 +1,19 @@
 POM_PATH = com.example.progetto.angelo.rosa.test/pom.xml
 
-test:
-	mvn clean verify -f $(POM_PATH)
-.PHONY: test
+junit-test:
+	mvn clean test -f $(POM_PATH)
+.PHONY: junit-test
+
+integration-test:
+	mvn clean verify -Pintegration-tests -f $(POM_PATH)
+.PHONY: integration-test
 
 run-pit:
-	mvn test org.pitest:pitest-maven:mutationCoverage -f $(POM_PATH)
+	mvn clean test org.pitest:pitest-maven:mutationCoverage -f $(POM_PATH)
 .PHONY: run-pit
 
 package:
-	mvn package -f $(POM_PATH)
+	mvn clean package -f $(POM_PATH)
 .PHONY: package
 
 docker-build:
@@ -21,3 +25,4 @@ docker-stop:
 .PHONY: docker-stop
 
 compile-and-setup: package docker-build
+test: integration-test run-pit
