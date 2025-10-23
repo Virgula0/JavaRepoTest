@@ -1,6 +1,9 @@
 package com.example.progetto.angelo.rosa.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static com.mongodb.client.model.Filters.eq;
+
+import java.util.ArrayList;
 
 import org.bson.Document;
 import org.junit.After;
@@ -19,7 +22,7 @@ import com.mongodb.*;
  * IMPORTANT: integration tests on repository are different from junit tests on repository
  * in both we can use test containers, eventually you can use memory database in junit test for testing repository
  */
-public class StudentMongoRepositoryTestcontainersIT {
+public class TestStudentMongoRepositoryWithTestcontainers {
 
 	@SuppressWarnings({ "rawtypes", "resource" })
 	@ClassRule
@@ -37,7 +40,8 @@ public class StudentMongoRepositoryTestcontainersIT {
 
 	@Before
 	public void setup() {
-		client = new MongoClient(new ServerAddress(mongo.getContainerIpAddress(), mongo.getMappedPort(StudentMongoRepository.PORT)));
+		client = new MongoClient(
+				new ServerAddress(mongo.getContainerIpAddress(), mongo.getMappedPort(StudentMongoRepository.PORT)));
 		studentRepository = new StudentMongoRepository(client);
 		MongoDatabase database = client.getDatabase(StudentMongoRepository.SCHOOL_DB_NAME);
 		// make sure we always start with a clean database
@@ -64,5 +68,36 @@ public class StudentMongoRepositoryTestcontainersIT {
 		addTestStudentToDatabase("2", "test2");
 
 		assertThat(studentRepository.findById("2")).isEqualTo(new Student("2", "test2"));
+	}
+
+	@Test
+	public void testSave() {
+		studentRepository.save(new Student("1", "test1"));
+
+	    assertThat(studentRepository.getStudentCollection()
+	            .find(eq("id", "1"))
+	            .map(doc -> new Student(doc.getString("id"), doc.getString("name")))
+	            .into(new ArrayList<>()))
+	        .containsExactly(new Student("1", "test1"));
+	}
+	
+	@Test
+	public void testDelete() {
+		addTestStudentToDatabase("1", "test1");
+		addTestStudentToDatabase("2", "test2");
+
+		studentRepository.delete("2");
+
+	    assertThat(studentRepository.getStudentCollection()
+	            .find(eq("id", "2"))
+	            .map(doc -> new Student(doc.getString("id"), doc.getString("name")))
+	            .into(new ArrayList<>()))
+	        	.isEmpty();
+	    
+	    assertThat(studentRepository.getStudentCollection()
+	            .find()
+	            .map(doc -> new Student(doc.getString("id"), doc.getString("name")))
+	            .into(new ArrayList<>()))
+	    		.containsExactly(new Student("1", "test1"));
 	}
 }

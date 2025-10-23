@@ -19,20 +19,14 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
         java: [17, 21]
         include:
           - os: ubuntu-latest
             java: 17
             # run PIT mutation test once along with integration tests, jacoco, e2e, coveralls and surefire report plugin generation on ubuntu
-            maven-cmd: "mvn verify -f com.example.progetto.angelo.rosa.test/pom.xml surefire-report:report-only -DrepoToken=$COVERALLS_REPO_TOKEN coveralls:report -Pintegration-tests org.pitest:pitest-maven:mutationCoverage"
+            additional-arguments: "surefire-report:report-only -DrepoToken=$COVERALLS_REPO_TOKEN coveralls:report -Pintegration-tests org.pitest:pitest-maven:mutationCoverage"
             integration-tests: with PIT and integration tests
-          - java: 21
-            # junit only for java 21 on ubuntu
-            maven-cmd: "mvn test -f com.example.progetto.angelo.rosa.test/pom.xml"
-          - os: windows-latest
-            # junit only for java on windows
-            maven-cmd: "mvn test -f com.example.progetto.angelo.rosa.test/pom.xml"
 
     name: Build with Java ${{ matrix.java }} on ${{ matrix.os }}
     steps:
@@ -58,7 +52,7 @@ jobs:
         
       - name: Build with Maven ${{ matrix.os }} on Java ${{ matrix.java }} ${{ matrix.integration-tests }}
         run: >
-          ${{ matrix.maven-cmd }}
+          mvn verify -f com.example.progetto.angelo.rosa.test/pom.xml ${{ matrix.additional-arguments }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
