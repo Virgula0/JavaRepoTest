@@ -19,7 +19,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, macos]
+        os: [ubuntu-latest]
         java: [17, 21]
         include:
           - os: ubuntu-latest
