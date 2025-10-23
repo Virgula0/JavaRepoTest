@@ -25,7 +25,7 @@ jobs:
           - os: ubuntu-latest
             java: 17
             # run PIT mutation test once along with integration tests, jacoco, e2e, coveralls and surefire report plugin generation on ubuntu
-            additional-arguments: "surefire-report:report-only -DrepoToken=$COVERALLS_REPO_TOKEN coveralls:report -Pintegration-tests org.pitest:pitest-maven:mutationCoverage"
+            additional-arguments: "surefire-report:report-only -DrepoToken=$COVERALLS_REPO_TOKEN -DpullRequest=${{ github.event.pull_request.number }} coveralls:report -Pintegration-tests org.pitest:pitest-maven:mutationCoverage"
             integration-tests: with PIT and integration tests
 
     name: Build with Java ${{ matrix.java }} on ${{ matrix.os }}
