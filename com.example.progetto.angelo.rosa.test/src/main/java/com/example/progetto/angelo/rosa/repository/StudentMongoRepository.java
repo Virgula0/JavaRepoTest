@@ -40,7 +40,6 @@ public class StudentMongoRepository implements StudentRepository {
 
 	@Override
 	public Student findById(String id) {
-		// TODO Auto-generated method stub
 		return StreamSupport.stream(studentCollection.find().spliterator(), false).map(d -> documentToStudent(d))
 				.filter(x -> Objects.equals(x.getId(), id)).findFirst().orElse(null);
 	}
@@ -57,5 +56,9 @@ public class StudentMongoRepository implements StudentRepository {
 	public void delete(String id) {
 		Document query = new Document(ID_KEY, id);
 		studentCollection.findOneAndDelete(query);
+	}
+	
+	protected MongoCollection<Document> getStudentCollection() {
+		return studentCollection;
 	}
 }
