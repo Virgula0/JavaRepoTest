@@ -14,45 +14,47 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import java.awt.Dimension;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 public class StudentSwingView extends JFrame implements StudentView {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField idText;
-	private JLabel lblNewLabel_1;
+	private JLabel nameLabel;
 	private JTextField idName;
-	private JButton btnNewButton;
+	private JButton buttonAdd;
 	private JList list;
 	private JScrollPane scrollPane;
-	private JButton btnNewButton_1;
+	private JButton deleteButton;
 	private JLabel errorMessage;
+	
+	// used in test, we will add and remove Student objects for not adding direclty
+	// elements to the JList
+	//private JList<Student> listStudents;
+	private DefaultListModel<Student> listStudentsModel;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					StudentSwingView frame = new StudentSwingView();
-					frame.setTitle("Student View");
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	DefaultListModel<Student> getListStudentsModel() { // package private method used fot testing purpose only
+		return listStudentsModel;
 	}
 
 	/**
 	 * Create the frame.
 	 */
 	public StudentSwingView() {
+		
+		listStudentsModel = new DefaultListModel<>();
+		list = new JList<>(listStudentsModel);
+		
 		setTitle("Student View");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 927, 586);
@@ -61,21 +63,22 @@ public class StudentSwingView extends JFrame implements StudentView {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{0, 830, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWidths = new int[] { 0, 830, 0 };
+		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_contentPane.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
-		
-		JLabel lblNewLabel = new JLabel("id");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 1;
-		contentPane.add(lblNewLabel, gbc_lblNewLabel);
-		
+
+		JLabel idLabel = new JLabel("id");
+		GridBagConstraints gbc_idLabel = new GridBagConstraints();
+		gbc_idLabel.anchor = GridBagConstraints.EAST;
+		gbc_idLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_idLabel.gridx = 0;
+		gbc_idLabel.gridy = 1;
+		contentPane.add(idLabel, gbc_idLabel);
+
 		idText = new JTextField();
+
 		idText.setName("idTextBox");
 		GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.insets = new Insets(0, 0, 5, 0);
@@ -84,35 +87,35 @@ public class StudentSwingView extends JFrame implements StudentView {
 		gbc_textField.gridy = 1;
 		contentPane.add(idText, gbc_textField);
 		idText.setColumns(10);
-		
-		lblNewLabel_1 = new JLabel("name");
-		lblNewLabel_1.setName("stduentName");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1.gridx = 0;
-		gbc_lblNewLabel_1.gridy = 2;
-		contentPane.add(lblNewLabel_1, gbc_lblNewLabel_1);
-		
+
+		nameLabel = new JLabel("name");
+		nameLabel.setName("stduentName");
+		GridBagConstraints gbc_nameLabel = new GridBagConstraints();
+		gbc_nameLabel.anchor = GridBagConstraints.EAST;
+		gbc_nameLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_nameLabel.gridx = 0;
+		gbc_nameLabel.gridy = 2;
+		contentPane.add(nameLabel, gbc_nameLabel);
+
 		idName = new JTextField();
 		idName.setName("nameTextBox");
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 1;
-		gbc_textField_1.gridy = 2;
-		contentPane.add(idName, gbc_textField_1);
+		GridBagConstraints gbc_idName = new GridBagConstraints();
+		gbc_idName.insets = new Insets(0, 0, 5, 0);
+		gbc_idName.fill = GridBagConstraints.HORIZONTAL;
+		gbc_idName.gridx = 1;
+		gbc_idName.gridy = 2;
+		contentPane.add(idName, gbc_idName);
 		idName.setColumns(10);
-		
-		btnNewButton = new JButton("Add");
-		btnNewButton.setEnabled(false);
+
+		buttonAdd = new JButton("Add");
+		buttonAdd.setEnabled(false);
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton.gridwidth = 2;
 		gbc_btnNewButton.gridx = 0;
 		gbc_btnNewButton.gridy = 3;
-		contentPane.add(btnNewButton, gbc_btnNewButton);
-		
+		contentPane.add(buttonAdd, gbc_btnNewButton);
+
 		scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
@@ -121,21 +124,23 @@ public class StudentSwingView extends JFrame implements StudentView {
 		gbc_scrollPane.gridx = 0;
 		gbc_scrollPane.gridy = 4;
 		contentPane.add(scrollPane, gbc_scrollPane);
-		
-		list = new JList();
+
+		// list = new JList<>(); not needed because already intialized with our student list
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(list);
 		list.setName("studentList");
-		
-		btnNewButton_1 = new JButton("Deleted selected");
-		btnNewButton_1.setEnabled(false);
+
+		deleteButton = new JButton("Delete Selected");
+		deleteButton.setName("deleteButton");
+		deleteButton.setEnabled(false);
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_1.gridwidth = 2;
 		gbc_btnNewButton_1.gridx = 0;
 		gbc_btnNewButton_1.gridy = 5;
-		contentPane.add(btnNewButton_1, gbc_btnNewButton_1);
-		
-		errorMessage = new JLabel("");
+		contentPane.add(deleteButton, gbc_btnNewButton_1);
+
+		errorMessage = new JLabel(" ");
 		errorMessage.setName("errorMessageLabel");
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.gridwidth = 2;
@@ -143,30 +148,49 @@ public class StudentSwingView extends JFrame implements StudentView {
 		gbc_lblNewLabel_2.gridy = 6;
 		contentPane.add(errorMessage, gbc_lblNewLabel_2);
 
+		eventsHandler(); // we call this at the end to let all the components to be initialized
+	}
+
+	private void eventsHandler() {
+		KeyAdapter keyAdapter = new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				buttonAdd.setEnabled(!idText.getText().isEmpty() && !idName.getText().isEmpty()
+						&& !idText.getText().isBlank() && !idName.getText().isBlank());
+			}
+		};
+		idText.addKeyListener(keyAdapter);
+		idName.addKeyListener(keyAdapter);
+		
+		// list
+		list.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent arg0) {
+				deleteButton.setEnabled(list.getSelectedIndex() != -1);
+			}
+		});
 	}
 
 	@Override
 	public void showAllStudents(List<Student> students) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void showError(String message, Student student) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void studentAdded(Student student) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void studentRemoved(Student student) {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 }
