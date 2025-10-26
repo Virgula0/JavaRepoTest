@@ -19,7 +19,7 @@
 
 		<!-- Deps versions -->
 		<junit.version>4.13</junit.version>
-		<assertj.version>3.15.0</assertj.version>
+		<assertj.version>3.17.1</assertj.version>
 		<mockito.version>5.12.0</mockito.version>
 		<jacoco.version>0.8.14</jacoco.version>
 		<maven.surefire.report-version>2.22.2</maven.surefire.report-version> <!--
@@ -104,7 +104,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
+			<artifactId>assertj-swing-junit</artifactId>
 			<version>${assertj.version}</version>
 			<scope>test</scope>
 		</dependency>
@@ -177,7 +177,8 @@
 						</execution>
 						<execution>
 							<id>jacoco-check</id>
-							<phase>test</phase> <!-- bind to test phase otherwise integration tests influences the coverage -->
+							<phase>test</phase> <!-- bind to test phase otherwise
+							integration tests influences the coverage -->
 							<goals>
 								<goal>check</goal>
 							</goals>
