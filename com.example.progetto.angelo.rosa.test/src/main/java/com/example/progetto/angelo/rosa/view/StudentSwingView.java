@@ -40,7 +40,6 @@ public class StudentSwingView extends JFrame implements StudentView {
 	
 	// used in test, we will add and remove Student objects for not adding direclty
 	// elements to the JList
-	//private JList<Student> listStudents;
 	private DefaultListModel<Student> listStudentsModel;
 
 	DefaultListModel<Student> getListStudentsModel() { // package private method used fot testing purpose only
@@ -172,25 +171,25 @@ public class StudentSwingView extends JFrame implements StudentView {
 
 	@Override
 	public void showAllStudents(List<Student> students) {
-		// TODO Auto-generated method stub
-
+		students.stream().forEach(listStudentsModel::addElement);
 	}
 
 	@Override
 	public void showError(String message, Student student) {
-		// TODO Auto-generated method stub
-
+		errorMessage.setText(message + ": " + student.toString());
 	}
 
 	@Override
 	public void studentAdded(Student student) {
 		// TODO Auto-generated method stub
-
+		listStudentsModel.addElement(student);
+		errorMessage.setText(" ");
 	}
 
 	@Override
 	public void studentRemoved(Student student) {
 		// TODO Auto-generated method stub
-
+		listStudentsModel.removeElement(student);
+		errorMessage.setText(" ");
 	}
 }

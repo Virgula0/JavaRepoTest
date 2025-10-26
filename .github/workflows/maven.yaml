@@ -52,7 +52,7 @@ jobs:
         
       - name: Build with Maven ${{ matrix.os }} on Java ${{ matrix.java }} ${{ matrix.integration-tests }}
         run: >
-          mvn verify -f com.example.progetto.angelo.rosa.test/pom.xml ${{ matrix.additional-arguments }}
+          xvfb-run mvn verify -f com.example.progetto.angelo.rosa.test/pom.xml ${{ matrix.additional-arguments }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 

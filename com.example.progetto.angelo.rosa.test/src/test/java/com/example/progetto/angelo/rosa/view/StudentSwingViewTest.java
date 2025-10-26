@@ -3,6 +3,8 @@ package com.example.progetto.angelo.rosa.view;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 
@@ -98,15 +100,66 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 		assertThat(list.contents().length).isZero();
 	}
 
-	@Test @GUITest
+	@Test
+	@GUITest
 	public void testDeleteButtonShouldBeEnabledOnlyWhenAStudentIsSelected() {
-		// this test uses GuiActionRunner.execute for Event Dispatch Thread (EDT) 
-		// and relies on listener aded to the list with valueChanged listener 
+		// this test uses GuiActionRunner.execute for Event Dispatch Thread (EDT)
+		// and relies on listener aded to the list with valueChanged listener
 		GuiActionRunner.execute(() -> studentSwingView.getListStudentsModel().addElement(new Student("1", "test")));
 		window.list("studentList").selectItem(0);
 		JButtonFixture deleteButton = window.button(JButtonMatcher.withText("Delete Selected"));
 		deleteButton.requireEnabled();
 		window.list("studentList").clearSelection();
 		deleteButton.requireDisabled();
+	}
+
+	@Test
+	public void testsShowAllStudentsShouldAddStudentDescriptionsToTheList() {
+		Student student1 = new Student("1", "test1");
+		Student student2 = new Student("2", "test2");
+		GuiActionRunner.execute(() -> studentSwingView.showAllStudents(Arrays.asList(student1, student2)));
+		String[] listContents = window.list().contents();
+		assertThat(listContents).containsExactly(student1.toString(), student2.toString());
+	}
+
+	@Test
+	public void testShowErrorShouldShowTheMessageInTheErrorLabel() {
+		Student student = new Student("1", "test1");
+		GuiActionRunner.execute(() -> studentSwingView.showError("error message", student));
+		window.label("errorMessageLabel").requireText("error message: " + student);
+	}
+	
+	@Test
+	public void testStudentAddedShouldAddTheStudentToTheListAndResetTheErrorLabel() {
+		// provoke error first 
+		Student student = new Student("1", "test1");
+		// add student and check errorMessage removed
+		GuiActionRunner.execute(() -> studentSwingView.studentAdded(student));
+		String[] listContents = window.list().contents();
+		assertThat(listContents).containsExactly(student.toString());
+		window.label("errorMessageLabel").requireText(" ");
+	}
+	
+	@Test 
+	public void testStudentDeletedShouldDeleteTheStudentFromTheListAndResetTheErrorLabel() {
+		// setup
+		Student student = new Student("1", "test1");
+		Student student2 = new Student("2", "test2"); 
+		GuiActionRunner.execute(() -> {
+			studentSwingView.getListStudentsModel().addElement(student);
+			studentSwingView.getListStudentsModel().addElement(student2);
+		});
+		String[] listContents = window.list().contents();
+		String[] studentStrings = new String[] {student.toString(),student2.toString()};
+		assertThat(listContents).containsExactly(studentStrings);
+		
+		// execute
+		window.list("studentList").selectItem(0);
+		GuiActionRunner.execute(() -> studentSwingView.studentRemoved(student)); // remove
+		
+		// verify
+		listContents = window.list().contents();
+		assertThat(listContents).containsExactly(student2.toString());
+		window.label("errorMessageLabel").requireText(" ");
 	}
 }
