@@ -1,14 +1,13 @@
 package com.example.progetto.angelo.rosa.view;
 
-import java.awt.EventQueue;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.example.progetto.angelo.rosa.controller.SchoolController;
 import com.example.progetto.angelo.rosa.model.Student;
-import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
@@ -33,11 +32,11 @@ public class StudentSwingView extends JFrame implements StudentView {
 	private JLabel nameLabel;
 	private JTextField idName;
 	private JButton buttonAdd;
-	private JList list;
+	private JList<Student> list;
 	private JScrollPane scrollPane;
 	private JButton deleteButton;
 	private JLabel errorMessage;
-	
+
 	// used in test, we will add and remove Student objects for not adding direclty
 	// elements to the JList
 	private DefaultListModel<Student> listStudentsModel;
@@ -46,14 +45,23 @@ public class StudentSwingView extends JFrame implements StudentView {
 		return listStudentsModel;
 	}
 
+	private SchoolController schoolController;
+
+	// needed because we cannot pass it directly to the constructor so we add a set
+	// method useful
+	// for integration tests when will use real controller
+	public void setSchoolController(SchoolController schoolController) {
+		this.schoolController = schoolController;
+	}
+
 	/**
 	 * Create the frame.
 	 */
 	public StudentSwingView() {
-		
+
 		listStudentsModel = new DefaultListModel<>();
 		list = new JList<>(listStudentsModel);
-		
+
 		setTitle("Student View");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 927, 586);
@@ -124,7 +132,8 @@ public class StudentSwingView extends JFrame implements StudentView {
 		gbc_scrollPane.gridy = 4;
 		contentPane.add(scrollPane, gbc_scrollPane);
 
-		// list = new JList<>(); not needed because already intialized with our student list
+		// list = new JList<>(); not needed because already intialized with our student
+		// list
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(list);
 		list.setName("studentList");
@@ -160,13 +169,16 @@ public class StudentSwingView extends JFrame implements StudentView {
 		};
 		idText.addKeyListener(keyAdapter);
 		idName.addKeyListener(keyAdapter);
-		
+
 		// list
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
 				deleteButton.setEnabled(list.getSelectedIndex() != -1);
 			}
 		});
+
+		buttonAdd.addActionListener(e -> schoolController.newStudent(new Student(idText.getText(), idName.getText())));
+		deleteButton.addActionListener(e -> schoolController.deleteStudent(list.getSelectedValue()));
 	}
 
 	@Override

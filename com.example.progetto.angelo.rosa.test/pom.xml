@@ -39,16 +39,9 @@
 		<testcontainers.version>1.15.1</testcontainers.version>
 
 		<!-- Project vars -->
-		<pit.target.class>com.example.progetto.angelo.rosa.*</pit.target.class>
-		<pit.target.test>com.example.progetto.angelo.rosa.*</pit.target.test>
-		<main.class>com.example.progetto.angelo.rosa.main.Main</main.class> <!--
-		do not append .java extension -->
+		<main.class>com.example.progetto.angelo.rosa.main.Main</main.class> <!-- do not append .java extension -->
 
-		<!-- Jacoco and PIT exclusions -->
-
-		<pit.exclusions>
-			com.example.progetto.angelo.rosa.main.*
-		</pit.exclusions>
+		<!-- Jacoco exclusions -->
 
 		<jacoco.exclusions>
 			com/example/progetto/angelo/rosa/main/*,com/example/progetto/angelo/rosa/model/*
@@ -220,14 +213,22 @@
 					<version>${pit.version}</version>
 					<configuration>
 						<targetClasses>
-							<param>${pit.target.class}</param>
+							<param>com.example.progetto.angelo.rosa.controller.*</param>
+							<param>com.example.progetto.angelo.rosa.repository.*</param>
 						</targetClasses>
 						<targetTests>
-							<param>${pit.target.test}</param>
+							<param>com.example.progetto.angelo.rosa.controller.*</param>
+							<param>com.example.progetto.angelo.rosa.repository.*</param>
 						</targetTests>
+						<!--
 						<excludedClasses>
-							<param>${pit.exclusions}</param>
+							<param>com.example.progetto.angelo.rosa.main.*</param>
+							<param>com.example.progetto.angelo.rosa.view.*</param>
 						</excludedClasses>
+						<excludedTestClasses>
+							<param>com.example.progetto.angelo.rosa.view.*</param>
+						</excludedTestClasses> 
+						-->
 						<mutators>
 							<mutator>DEFAULTS</mutator>
 						</mutators>
