@@ -30,4 +30,9 @@ public class Student {
 		Student other = (Student) obj;
 		return Objects.equals(id, other.id) && Objects.equals(name, other.name);
 	}
+
+	@Override
+	public String toString() {
+		return "Student [id=" + id + ", name=" + name + "]";
+	}
 }
