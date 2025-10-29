@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static com.mongodb.client.model.Filters.eq;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import org.bson.Document;
 import org.junit.After;

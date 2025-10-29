@@ -17,6 +17,7 @@ package:
 .PHONY: package
 
 docker-build:
+	xhost +local:docker
 	docker compose up --build 
 .PHONY: docker-build
 
