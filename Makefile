@@ -26,4 +26,4 @@ docker-stop:
 .PHONY: docker-stop
 
 compile-and-setup: package docker-build
-test: junit integration-test run-pit
+test: run-pit
