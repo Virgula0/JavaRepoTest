@@ -21,10 +21,11 @@ import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
 
-public class SchoolControllerIT {
+public class SchoolControllerRepositoryIT {
 	/*
 	 * Here we mock what we will test in the UI with e2e tests integration tests
 	 * tests only positive cases :)
+	 * we test both controller and repository with integration tests
 	 */
 	@Mock
 	private StudentView studentView;
