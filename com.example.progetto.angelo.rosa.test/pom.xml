@@ -125,6 +125,11 @@
 			<version>${testcontainers.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<version>4.6.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -237,15 +242,6 @@
 							<param>com.example.progetto.angelo.rosa.controller.*</param>
 							<param>com.example.progetto.angelo.rosa.repository.*</param>
 						</targetTests>
-						<!--
-						<excludedClasses>
-							<param>com.example.progetto.angelo.rosa.main.*</param>
-							<param>com.example.progetto.angelo.rosa.view.*</param>
-						</excludedClasses>
-						<excludedTestClasses>
-							<param>com.example.progetto.angelo.rosa.view.*</param>
-						</excludedTestClasses> 
-						-->
 						<mutators>
 							<mutator>DEFAULTS</mutator>
 						</mutators>
