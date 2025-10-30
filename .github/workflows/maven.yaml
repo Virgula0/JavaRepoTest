@@ -46,7 +46,6 @@ jobs:
         with:
           path: |
             ~/.m2
-            ~/.sonar/cache
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/*.yml') }}
           restore-keys: ${{ runner.os }}-m2-
 
