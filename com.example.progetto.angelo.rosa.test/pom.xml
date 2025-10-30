@@ -105,6 +105,8 @@
 			${project.build.directory}/surefire-reports,
 			${project.build.directory}/failsafe-reports
 		</sonar.junit.reportPaths>
+		
+  		<sonar.organization>virgula0</sonar.organization>
 
 	</properties>
 
