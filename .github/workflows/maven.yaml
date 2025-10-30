@@ -60,7 +60,7 @@ jobs:
         if: ${{ matrix.java == 17 }}
         uses: actions/upload-artifact@v4
         with:
-          name: surefire-report-jdk-${{ matrix.java }}-${{ matrix.os }}
+          name: coverage-and-pit-${{ matrix.java }}-${{ matrix.os }}
           path: |
             **/target/site/jacoco
             **/target/pit-reports
