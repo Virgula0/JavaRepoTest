@@ -12,6 +12,10 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
+// Log4j
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 /**
  * Simple app accessing MongoDB.
  */
@@ -45,7 +49,7 @@ public class Main implements Callable<Void> {
 				studentView.setVisible(true);
 				schoolController.allStudents();
 			} catch (Exception e) {
-				e.printStackTrace();
+				Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception", e);
 			}
 		});
 		return null;

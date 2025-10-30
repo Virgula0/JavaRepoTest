@@ -7,13 +7,11 @@ public class Student {
 	private String name;
 
 	public Student(String id, String name) {
-		// TODO Auto-generated constructor stub
 		this.id = id;
 		this.name = name;
 	}
 
 	public String getId() {
-		// TODO Auto-generated method stub
 		return this.id;
 	}
 

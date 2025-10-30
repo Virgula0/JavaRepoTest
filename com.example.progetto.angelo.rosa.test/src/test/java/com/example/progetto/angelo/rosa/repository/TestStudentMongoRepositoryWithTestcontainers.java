@@ -75,13 +75,11 @@ public class TestStudentMongoRepositoryWithTestcontainers {
 	public void testSave() {
 		studentRepository.save(new Student("1", "test1"));
 
-	    assertThat(studentRepository.getStudentCollection()
-	            .find(eq("id", "1"))
-	            .map(doc -> new Student(doc.getString("id"), doc.getString("name")))
-	            .into(new ArrayList<>()))
-	        .containsExactly(new Student("1", "test1"));
+		assertThat(studentRepository.getStudentCollection().find(eq("id", "1"))
+				.map(doc -> new Student(doc.getString("id"), doc.getString("name"))).into(new ArrayList<>()))
+				.containsExactly(new Student("1", "test1"));
 	}
-	
+
 	@Test
 	public void testDelete() {
 		addTestStudentToDatabase("1", "test1");
@@ -89,16 +87,11 @@ public class TestStudentMongoRepositoryWithTestcontainers {
 
 		studentRepository.delete("2");
 
-	    assertThat(studentRepository.getStudentCollection()
-	            .find(eq("id", "2"))
-	            .map(doc -> new Student(doc.getString("id"), doc.getString("name")))
-	            .into(new ArrayList<>()))
-	        	.isEmpty();
-	    
-	    assertThat(studentRepository.getStudentCollection()
-	            .find()
-	            .map(doc -> new Student(doc.getString("id"), doc.getString("name")))
-	            .into(new ArrayList<>()))
-	    		.containsExactly(new Student("1", "test1"));
+		assertThat(studentRepository.getStudentCollection().find(eq("id", "2"))
+				.map(doc -> new Student(doc.getString("id"), doc.getString("name"))).into(new ArrayList<>())).isEmpty();
+
+		assertThat(studentRepository.getStudentCollection().find()
+				.map(doc -> new Student(doc.getString("id"), doc.getString("name"))).into(new ArrayList<>()))
+				.containsExactly(new Student("1", "test1"));
 	}
 }

@@ -45,7 +45,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 		return listStudentsModel;
 	}
 
-	private SchoolController schoolController;
+	private transient SchoolController schoolController;
 
 	// needed because we cannot pass it directly to the constructor so we add a set
 	// method useful
@@ -163,8 +163,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 		KeyAdapter keyAdapter = new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				buttonAdd.setEnabled(!idText.getText().isEmpty() && !idName.getText().isEmpty()
-						&& !idText.getText().isBlank() && !idName.getText().isBlank());
+				buttonAdd.setEnabled(!idText.getText().isBlank() && !idName.getText().isBlank());
 			}
 		};
 		idText.addKeyListener(keyAdapter);
@@ -193,14 +192,12 @@ public class StudentSwingView extends JFrame implements StudentView {
 
 	@Override
 	public void studentAdded(Student student) {
-		// TODO Auto-generated method stub
 		listStudentsModel.addElement(student);
 		errorMessage.setText(" ");
 	}
 
 	@Override
 	public void studentRemoved(Student student) {
-		// TODO Auto-generated method stub
 		listStudentsModel.removeElement(student);
 		errorMessage.setText(" ");
 	}

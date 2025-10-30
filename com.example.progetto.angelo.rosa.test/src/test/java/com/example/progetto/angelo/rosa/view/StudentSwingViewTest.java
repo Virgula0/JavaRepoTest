@@ -205,6 +205,6 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.button(JButtonMatcher.withText("Delete Selected")).click();
 		verify(schoolController).deleteStudent(student2);
 	}
-	
+
 	// we tested correctly all the frame at this point
 }
