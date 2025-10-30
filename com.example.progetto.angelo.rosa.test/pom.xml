@@ -27,6 +27,7 @@
 		by default differently from failsafe-->
 		<maven.failsafe.version>2.22.1</maven.failsafe.version> <!-- failsafe:
 		integration tests -->
+		<picocli.version>4.6.1</picocli.version>
 
 		<maven.site.version>3.9.1</maven.site.version>
 		<coveralls.version>4.3.0</coveralls.version>
@@ -128,7 +129,7 @@
 		<dependency>
 			<groupId>info.picocli</groupId>
 			<artifactId>picocli</artifactId>
-			<version>4.6.1</version>
+			<version>${picocli.version}</version>
 		</dependency>
 	</dependencies>
 
