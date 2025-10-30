@@ -40,9 +40,6 @@ jobs:
         run: >
             xvfb-run mvn verify -Pjacoco sonar:sonar
             -Dsonar.organization=virgula0-github
-            -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
-            -Dsonar.pullrequest.branch=${{ github.head_ref }}
-            -Dsonar.pullrequest.base=${{ github.base_ref }}
             -Dsonar.host.url=https://sonarcloud.io
         working-directory: com.example.progetto.angelo.rosa.test
         env:
