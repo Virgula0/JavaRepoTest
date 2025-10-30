@@ -6,13 +6,25 @@ services:
   mongodb:
     image: mongo:4.4.3
     container_name: mongodb
+    ports:
+      - 27017:27017
     networks:
       - angelo-rosa-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.runCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: "5s"
 
   java-app:
     build:
       context: com.example.progetto.angelo.rosa.test
       dockerfile: Dockerfile
+      args:
+        DISPLAY: ${DISPLAY} # Pass display variable from terminal
+    environment:
+      - DISPLAY=${DISPLAY} # Pass display variable from terminal
     container_name: java-app
     depends_on:
       - mongodb
@@ -24,3 +36,5 @@ services:
       timeout: 5s
       retries: 5
       start_period: "1s"
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix # X11 forwarding

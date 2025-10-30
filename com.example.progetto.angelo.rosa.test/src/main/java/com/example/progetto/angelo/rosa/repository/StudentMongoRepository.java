@@ -21,11 +21,15 @@ public class StudentMongoRepository implements StudentRepository {
 	public static final String STUDENT_COLLECTION_NAME = "student";
 	private MongoCollection<Document> studentCollection;
 
-	private static final String ID_KEY = "id";
-	private static final String NAME_KEY = "name";
+	public static final String ID_KEY = "id";
+	public static final String NAME_KEY = "name";
+	
+	public StudentMongoRepository(MongoClient client, String databaseName, String collecitonName) {
+		studentCollection = client.getDatabase(databaseName).getCollection(collecitonName);
+	}
 
 	public StudentMongoRepository(MongoClient client) {
-		studentCollection = client.getDatabase(SCHOOL_DB_NAME).getCollection(STUDENT_COLLECTION_NAME);
+		this(client, SCHOOL_DB_NAME, STUDENT_COLLECTION_NAME);
 	}
 
 	@Override
@@ -57,8 +61,8 @@ public class StudentMongoRepository implements StudentRepository {
 		Document query = new Document(ID_KEY, id);
 		studentCollection.findOneAndDelete(query);
 	}
-	
-	protected MongoCollection<Document> getStudentCollection() {
+
+	MongoCollection<Document> getStudentCollection() {
 		return studentCollection;
 	}
 }
