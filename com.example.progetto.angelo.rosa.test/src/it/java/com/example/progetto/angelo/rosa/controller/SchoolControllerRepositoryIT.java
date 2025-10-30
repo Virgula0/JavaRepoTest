@@ -25,8 +25,8 @@ import com.mongodb.client.MongoDatabase;
 public class SchoolControllerRepositoryIT {
 	/*
 	 * Here we mock what we will test in the UI with e2e tests integration tests
-	 * tests only positive cases :)
-	 * we test both controller and repository with integration tests
+	 * tests only positive cases :) we test both controller and repository with
+	 * integration tests
 	 */
 	@Mock
 	private StudentView studentView;
@@ -47,7 +47,8 @@ public class SchoolControllerRepositoryIT {
 
 	@BeforeClass
 	public static void beforeClassSetup() {
-		client = new MongoClient(new ServerAddress(mongo.getContainerIpAddress(), mongo.getMappedPort(StudentMongoRepository.PORT)));
+		client = new MongoClient(
+				new ServerAddress(mongo.getContainerIpAddress(), mongo.getMappedPort(StudentMongoRepository.PORT)));
 		database = client.getDatabase(StudentMongoRepository.SCHOOL_DB_NAME);
 	}
 

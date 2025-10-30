@@ -26,9 +26,9 @@ import com.mongodb.client.MongoDatabase;
 public class ITViewControllerRepository extends AssertJSwingJUnitTestCase {
 
 	/*
-	 * Database here could be mocked with an in-memory database
-	 * I used interaction with a real implementation anyway
-	 * Note that it does not make sense to write integration tests for scenarios that only have to do with the view itself.
+	 * Database here could be mocked with an in-memory database I used interaction
+	 * with a real implementation anyway Note that it does not make sense to write
+	 * integration tests for scenarios that only have to do with the view itself.
 	 */
 	private StudentSwingView studentSwingView;
 	private StudentMongoRepository studentRepository;
@@ -147,8 +147,5 @@ public class ITViewControllerRepository extends AssertJSwingJUnitTestCase {
 		assertThat(window.list().contents()).containsExactly(student.toString());
 		window.label("errorMessageLabel").requireText("No existing student with id 1: " + student);
 	}
-	
 
-	
-	
 }
