@@ -84,9 +84,7 @@
 			java:S2699
 		</sonar.issue.ignore.multicriteria.e13.ruleKey>
 		<sonar.issue.ignore.multicriteria.e13.resourceKey>
-			**/*IT*.java,
-			**/*E2E*.java,
-			**/*View*.java
+			**/*IT*.java,**/*E2E*.java,**/*View*.java
 		</sonar.issue.ignore.multicriteria.e13.resourceKey>
 
 		<!-- Inheritance tree of classes should not be too 5 deep (UI nesting) -->
