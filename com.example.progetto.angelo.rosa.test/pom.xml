@@ -18,27 +18,27 @@
 		<maven.compiler.target>17</maven.compiler.target>
 
 		<!-- Deps versions -->
-		<junit.version>4.13</junit.version>
-		<assertj.version>3.17.1</assertj.version>
+		<junit.version>4.13.2</junit.version>
+		<assertjswing.version>3.17.1</assertjswing.version>
 		<mockito.version>5.12.0</mockito.version>
 		<jacoco.version>0.8.14</jacoco.version>
-		<maven.surefire.report-version>2.22.2</maven.surefire.report-version> <!--
+		<maven.surefire.report-version>3.5.2</maven.surefire.report-version> <!--
 		junit tests, this is just for the report, surefire is enabled in maven
 		by default differently from failsafe-->
-		<maven.failsafe.version>2.22.1</maven.failsafe.version> <!-- failsafe:
+		<maven.failsafe.version>3.5.2</maven.failsafe.version> <!-- failsafe:
 		integration tests -->
-		<picocli.version>4.6.1</picocli.version>
-		<log4j.version>2.13.0</log4j.version>
+		<picocli.version>4.7.6</picocli.version>
+		<log4j.version>2.24.3</log4j.version>
 
 		<maven.site.version>3.9.1</maven.site.version>
 		<coveralls.version>4.3.0</coveralls.version>
 		<mongodb.version>3.12.7</mongodb.version>
 		<pit.version>1.21.0</pit.version>
 		<maven.compiler.version>3.11.0</maven.compiler.version>
-		<qos.logback.version>1.2.3</qos.logback.version>
-		<build.helper.maven.version>3.0.0</build.helper.maven.version> <!--
+		<qos.logback.version>1.2.13</qos.logback.version>
+		<build.helper.maven.version>3.6.0</build.helper.maven.version> <!--
 		useful for different source folders for integration tests and e2e tests -->
-		<testcontainers.version>1.15.1</testcontainers.version>
+		<testcontainers.version>1.20.4</testcontainers.version>
 		<sonarcube.version>5.1.0.4751</sonarcube.version>
 
 		<!-- Project vars -->
@@ -84,7 +84,9 @@
 			java:S2699
 		</sonar.issue.ignore.multicriteria.e13.ruleKey>
 		<sonar.issue.ignore.multicriteria.e13.resourceKey>
-			**/*IT*.java,**/*E2E*.java,**/*View*.java
+			**/*IT*.java,
+			**/*E2E*.java,
+			**/*View*.java
 		</sonar.issue.ignore.multicriteria.e13.resourceKey>
 
 		<!-- Inheritance tree of classes should not be too 5 deep (UI nesting) -->
@@ -105,7 +107,7 @@
 			${project.build.directory}/surefire-reports,
 			${project.build.directory}/failsafe-reports
 		</sonar.junit.reportPaths>
-	
+
 	</properties>
 
 	<profiles>
@@ -150,7 +152,7 @@
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-swing-junit</artifactId>
-			<version>${assertj.version}</version>
+			<version>${assertjswing.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
