@@ -24,8 +24,6 @@ import com.mongodb.*;
  * in both we can use test containers, eventually you can use memory database in junit test for testing repository
  */
 public class TestStudentMongoRepositoryWithTestcontainers {
-	/*
-
 	@SuppressWarnings({ "rawtypes", "resource" })
 	@ClassRule
 	public static final GenericContainer mongo = new GenericContainer(
@@ -95,5 +93,4 @@ public class TestStudentMongoRepositoryWithTestcontainers {
 				.map(doc -> new Student(doc.getString("id"), doc.getString("name"))).into(new ArrayList<>()))
 				.containsExactly(new Student("1", "test1"));
 	}
-	*/
 }
