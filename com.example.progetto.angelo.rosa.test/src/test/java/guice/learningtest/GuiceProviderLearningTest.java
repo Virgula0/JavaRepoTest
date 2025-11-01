@@ -69,13 +69,14 @@ public class GuiceProviderLearningTest {
 		File file;
 	}
 
+	// Windows doesn’t care about case when looking up files.!!!!!!!!!!!
 	@Test
 	public void providerBinding() {
 		Module module = new AbstractModule() {
 			@Override
 			protected void configure() {
 				// provider accepts a functional interface so we can use a lambda
-				bind(File.class).toProvider(() -> new File("src/test/resources/afile.txt"));
+				bind(File.class).toProvider(() -> new File("src/test/resources/aFile.txt"));
 			}
 		};
 		Injector injector = Guice.createInjector(module);
@@ -104,7 +105,7 @@ public class GuiceProviderLearningTest {
 				// declared with annotedWith is not that fine as we can misspell them
 				// the next test will try to solve this problem
 				bind(String.class).annotatedWith(Names.named("PATH")).toInstance("src/test/resources");
-				bind(String.class).annotatedWith(Names.named("NAME")).toInstance("afile.txt");
+				bind(String.class).annotatedWith(Names.named("NAME")).toInstance("aFile.txt");
 			}
 		};
 		Injector injector = Guice.createInjector(module);
@@ -139,7 +140,7 @@ public class GuiceProviderLearningTest {
 			@Override
 			protected void configure() {
 				bind(String.class).annotatedWith(FilePath.class).toInstance("src/test/resources");
-				bind(String.class).annotatedWith(FileName.class).toInstance("afile.txt");
+				bind(String.class).annotatedWith(FileName.class).toInstance("aFile.txt");
 			}
 		};
 		Injector injector = Guice.createInjector(module);

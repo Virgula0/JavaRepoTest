@@ -4,6 +4,10 @@ junit:
 	mvn clean verify -f $(POM_PATH)
 .PHONY: junit
 
+junit-skipcoverage:
+	mvn clean verify -DskipCoverage=true -f $(POM_PATH)
+.PHONY: junit-skipcoverage
+
 integration-test:
 	mvn clean verify -Pintegration-tests -f $(POM_PATH)
 .PHONY: integration-test
