@@ -12,6 +12,16 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
+import com.google.inject.name.Names;
+import com.google.inject.util.Modules;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import com.google.inject.BindingAnnotation;
 
 public class GuiceProviderLearningTest {
 
@@ -72,4 +82,108 @@ public class GuiceProviderLearningTest {
 		MyFileWrapper fileWrapper = injector.getInstance(MyFileWrapper.class);
 		assertThat(fileWrapper.file.exists()).isTrue();
 	}
+
+	/*
+	 * In case we need multiple bindings for the same type we can use a built-in
+	 * Guice binding annotation like @Named
+	 */
+	private static class MyFileWrapper2 {
+		File file;
+
+		@Inject
+		public MyFileWrapper2(@Named("PATH") String path, @Named("NAME") String name) {
+			file = new File(path, name);
+		}
+	}
+
+	@Test
+	public void bindingAnnotations() {
+		Module module = new AbstractModule() {
+			@Override
+			protected void configure() {
+				// declared with annotedWith is not that fine as we can misspell them
+				// the next test will try to solve this problem
+				bind(String.class).annotatedWith(Names.named("PATH")).toInstance("src/test/resources");
+				bind(String.class).annotatedWith(Names.named("NAME")).toInstance("afile.txt");
+			}
+		};
+		Injector injector = Guice.createInjector(module);
+		MyFileWrapper2 fileWrapper = injector.getInstance(MyFileWrapper2.class);
+		assertThat(fileWrapper.file.exists()).isTrue();
+	}
+
+	@BindingAnnotation
+	@Target({ FIELD, PARAMETER, METHOD })
+	@Retention(RUNTIME)
+	private static @interface FilePath {
+	}
+
+	@BindingAnnotation
+	@Target({ FIELD, PARAMETER, METHOD })
+	@Retention(RUNTIME)
+	private static @interface FileName {
+	}
+
+	private static class MyFileWrapper3 {
+		File file;
+
+		@Inject
+		public MyFileWrapper3(@FilePath String path, @FileName String name) {
+			file = new File(path, name);
+		}
+	}
+
+	@Test
+	public void customBindingAnnotations() {
+		Module module = new AbstractModule() {
+			@Override
+			protected void configure() {
+				bind(String.class).annotatedWith(FilePath.class).toInstance("src/test/resources");
+				bind(String.class).annotatedWith(FileName.class).toInstance("afile.txt");
+			}
+		};
+		Injector injector = Guice.createInjector(module);
+		MyFileWrapper3 fileWrapper = injector.getInstance(MyFileWrapper3.class);
+		assertThat(fileWrapper.file.exists()).isTrue();
+	}
+
+	private static class MyClient {
+		MyService service;
+		
+		@Inject
+		public MyClient(MyService service) {
+			this.service = service;
+		}
+	}
+
+	
+	// custom bindings override
+	// use Modules.override(new DefaultModule()).with(new CustomModule())
+	@Test
+	public void modulesOverride() {
+		Module defaultModule = new AbstractModule() {
+			@Override
+			protected void configure() {
+				bind(IMyService.class).to(MyService.class);
+			}
+		};
+		Injector injector = Guice.createInjector(defaultModule);
+		MyClient client1 = injector.getInstance(MyClient.class);
+		MyClient client2 = injector.getInstance(MyClient.class);
+		// not singleton
+		assertThat(client1.service).isNotEqualTo(client2.service);
+		Module customModule = new AbstractModule() {
+			@Override
+			protected void configure() {
+				bind(MyService.class).in(Singleton.class);
+			}
+		};
+		injector = Guice.createInjector(Modules.override(defaultModule).with(customModule));
+		client1 = injector.getInstance(MyClient.class);
+		client2 = injector.getInstance(MyClient.class);
+		assertThat(client1.service).isNotNull();
+		// now it is singleton
+		assertThat(client1.service).isEqualTo(client2.service);
+	}
+
 }
