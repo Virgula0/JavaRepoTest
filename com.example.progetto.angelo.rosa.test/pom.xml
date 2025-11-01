@@ -191,6 +191,11 @@
 			<artifactId>logback-classic</artifactId>
 			<version>${qos.logback.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-assistedinject</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
