@@ -1,8 +1,19 @@
 package com.example.progetto.angelo.rosa.controller;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
 import com.example.progetto.angelo.rosa.model.Student;
 import com.example.progetto.angelo.rosa.repository.StudentRepository;
 import com.example.progetto.angelo.rosa.view.StudentView;
+import com.google.inject.BindingAnnotation;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 /*
  * The controller processes user requests from the view by delegating database operations
@@ -15,14 +26,24 @@ import com.example.progetto.angelo.rosa.view.StudentView;
  * TIP: They can be used at controller level somehow
  * */
 public class SchoolController {
+	
+	@BindingAnnotation
+	@Target({ FIELD, PARAMETER, METHOD })
+	@Retention(RUNTIME)
+	public static @interface RepoType {
+	}
+	
 	private StudentView studentView;
 	private StudentRepository studentRepository;
 
-	public SchoolController(StudentView studentView, StudentRepository studentRepo) {
+	// @Assisted means that we want to provide some arguments manually when creating an object
+	// this is passed using .create(view); on factory method
+	@Inject
+	public SchoolController(@Assisted StudentView studentView, @RepoType StudentRepository studentRepo) {
 		this.studentView = studentView;
 		this.studentRepository = studentRepo;
 	}
-
+	
 	public void allStudents() {
 		studentView.showAllStudents(studentRepository.findAll());
 	}
