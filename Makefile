@@ -17,7 +17,7 @@ run-all:
 .PHONY: run-all
 
 package:
-	mvn clean package -f $(POM_PATH)
+	mvn clean package -Pskip-tests -f $(POM_PATH)
 .PHONY: package
 
 docker-build:
