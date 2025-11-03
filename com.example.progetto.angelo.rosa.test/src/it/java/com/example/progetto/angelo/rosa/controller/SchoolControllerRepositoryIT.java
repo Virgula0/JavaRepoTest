@@ -1,7 +1,6 @@
 package com.example.progetto.angelo.rosa.controller;
 
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
 

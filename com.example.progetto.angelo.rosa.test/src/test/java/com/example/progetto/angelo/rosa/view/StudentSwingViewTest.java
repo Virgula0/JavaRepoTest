@@ -1,11 +1,13 @@
 package com.example.progetto.angelo.rosa.view;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
 
 import javax.swing.DefaultListModel;
+import javax.swing.SwingUtilities;
 
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.matcher.JButtonMatcher;
@@ -62,6 +64,26 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Override
 	protected void onTearDown() throws Exception {
 		closeable.close();
+	}
+	
+	@Test
+	public void assertControllerIsTheRightOne() {
+		assertThat(studentSwingView.getSchoolController()).isSameAs(schoolController).isEqualTo(schoolController);
+	}
+	
+	@Test
+	@GUITest 
+	public void assertStartRunsCorrectly() throws Exception{
+        // Run inside the Swing Event Dispatch Thread
+        SwingUtilities.invokeAndWait(() -> {
+        	studentSwingView.start();
+        });
+        // Verify controller interaction
+        verify(schoolController, times(1)).allStudents();
+        // Check that frame is visible
+        assertThat(studentSwingView.isVisible()).isTrue();
+        // Clean up (important for Swing tests)
+        SwingUtilities.invokeAndWait(() -> studentSwingView.dispose());
 	}
 
 	// BASIC TESTS

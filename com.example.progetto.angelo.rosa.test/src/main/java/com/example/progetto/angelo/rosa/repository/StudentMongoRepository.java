@@ -1,5 +1,12 @@
 package com.example.progetto.angelo.rosa.repository;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -8,10 +15,37 @@ import java.util.stream.StreamSupport;
 import org.bson.Document;
 
 import com.example.progetto.angelo.rosa.model.Student;
+import com.google.inject.BindingAnnotation;
+import com.google.inject.Inject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 
+
 public class StudentMongoRepository implements StudentRepository {
+	
+	@BindingAnnotation
+	@Target({ FIELD, PARAMETER, METHOD })
+	@Retention(RUNTIME)
+	public @interface MongoHost {
+	}
+	
+	@BindingAnnotation
+	@Target({ FIELD, PARAMETER, METHOD })
+	@Retention(RUNTIME)
+	public @interface MongoPort {
+	}
+	
+	@BindingAnnotation
+	@Target({ FIELD, PARAMETER, METHOD })
+	@Retention(RUNTIME)
+	public static @interface DatabaseName {
+	}
+
+	@BindingAnnotation
+	@Target({ FIELD, PARAMETER, METHOD })
+	@Retention(RUNTIME)
+	public static @interface CollectionName {
+	}
 
 	public static final String IMAGE = System.getProperty("mongo.image", "mongo");
 	public static final String VERSION = System.getProperty("mongo.version", "4.4.3");
@@ -24,7 +58,9 @@ public class StudentMongoRepository implements StudentRepository {
 	public static final String ID_KEY = "id";
 	public static final String NAME_KEY = "name";
 
-	public StudentMongoRepository(MongoClient client, String databaseName, String collecitonName) {
+	@Inject
+	public StudentMongoRepository(MongoClient client, @DatabaseName String databaseName,
+			@CollectionName String collecitonName) {
 		studentCollection = client.getDatabase(databaseName).getCollection(collecitonName);
 	}
 

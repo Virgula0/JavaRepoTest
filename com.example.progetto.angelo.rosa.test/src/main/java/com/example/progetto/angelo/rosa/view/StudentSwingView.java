@@ -1,28 +1,28 @@
 package com.example.progetto.angelo.rosa.view;
 
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.example.progetto.angelo.rosa.controller.SchoolController;
 import com.example.progetto.angelo.rosa.model.Student;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JTextField;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import java.awt.Dimension;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.ListSelectionEvent;
 
 public class StudentSwingView extends JFrame implements StudentView {
 
@@ -52,8 +52,19 @@ public class StudentSwingView extends JFrame implements StudentView {
 	// for integration tests when will use real controller
 	public void setSchoolController(SchoolController schoolController) {
 		this.schoolController = schoolController;
+	} 
+	
+	// this is useful for removing cyclic dependency
+	// controller -> view -> controller
+	public SchoolController getSchoolController() {
+		return schoolController;
 	}
-
+	
+	public void start() {
+		setVisible(true);
+		schoolController.allStudents(); // so we don't need to call it from the main
+	}
+	
 	/**
 	 * Create the frame.
 	 */
