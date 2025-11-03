@@ -1,6 +1,10 @@
 package com.example.progetto.angelo.rosa.controller;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.ignoreStubs;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.example.progetto.angelo.rosa.controller.SchoolController;
 import com.example.progetto.angelo.rosa.model.Student;
 import com.example.progetto.angelo.rosa.repository.StudentRepository;
 import com.example.progetto.angelo.rosa.view.StudentView;

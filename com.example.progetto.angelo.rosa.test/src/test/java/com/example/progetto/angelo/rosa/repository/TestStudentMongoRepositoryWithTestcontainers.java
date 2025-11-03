@@ -1,10 +1,9 @@
 package com.example.progetto.angelo.rosa.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static com.mongodb.client.model.Filters.eq;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import org.bson.Document;
 import org.junit.After;
@@ -13,10 +12,11 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.testcontainers.containers.GenericContainer;
 
+import com.example.progetto.angelo.rosa.model.Student;
+import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.example.progetto.angelo.rosa.model.Student;
-import com.mongodb.*;
 
 /*
  * Integration tests are meant to test only positive cases, negative ones should be handled by junit tests already

@@ -2,19 +2,19 @@ package com.example.progetto.angelo.rosa.main;
 
 import java.awt.EventQueue;
 import java.util.concurrent.Callable;
+import java.util.logging.Level;
+// Log4j
+import java.util.logging.Logger;
 
 import com.example.progetto.angelo.rosa.controller.SchoolController;
 import com.example.progetto.angelo.rosa.repository.StudentMongoRepository;
 import com.example.progetto.angelo.rosa.view.StudentSwingView;
-import com.mongodb.*;
+import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-
-// Log4j
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 /**
  * Simple app accessing MongoDB.

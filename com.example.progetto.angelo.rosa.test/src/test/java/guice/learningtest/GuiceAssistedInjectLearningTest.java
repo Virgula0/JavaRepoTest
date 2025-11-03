@@ -1,7 +1,5 @@
 package guice.learningtest;
 
-import com.google.inject.Module;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
@@ -10,20 +8,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-
+import com.google.inject.Module;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-
-import com.google.inject.Module;
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
-import com.google.inject.name.Names;
-import com.google.inject.util.Modules;
 
 public class GuiceAssistedInjectLearningTest {
 

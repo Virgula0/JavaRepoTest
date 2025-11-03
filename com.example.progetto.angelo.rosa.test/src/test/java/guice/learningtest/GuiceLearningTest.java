@@ -1,15 +1,17 @@
 package guice.learningtest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-import com.google.inject.Module;
-import com.google.inject.Singleton;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Module;
+import com.google.inject.Singleton;
 
 public class GuiceLearningTest {
 	private static class MyService {

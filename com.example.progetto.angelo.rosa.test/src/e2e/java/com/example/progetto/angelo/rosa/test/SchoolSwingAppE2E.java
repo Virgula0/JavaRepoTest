@@ -1,16 +1,7 @@
 package com.example.progetto.angelo.rosa.test;
 
-import org.assertj.swing.fixture.FrameFixture;
-import org.assertj.swing.junit.runner.GUITestRunner;
-import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
-import org.bson.Document;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.testcontainers.containers.GenericContainer;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.swing.launcher.ApplicationLauncher.*;
+import static org.assertj.swing.launcher.ApplicationLauncher.application;
 
 import java.util.regex.Pattern;
 
@@ -20,9 +11,17 @@ import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.GenericTypeMatcher;
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.finder.WindowFinder;
+import org.assertj.swing.fixture.FrameFixture;
+import org.assertj.swing.junit.runner.GUITestRunner;
+import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
+import org.bson.Document;
+import org.junit.ClassRule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.testcontainers.containers.GenericContainer;
 
 import com.example.progetto.angelo.rosa.repository.StudentMongoRepository;
-import com.mongodb.*;
+import com.mongodb.MongoClient;
 
 @RunWith(GUITestRunner.class)
 public class SchoolSwingAppE2E extends AssertJSwingJUnitTestCase {

@@ -1,27 +1,28 @@
 package guice.learningtest;
 
-import static org.assertj.core.api.Assertions.*;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
 import org.junit.Test;
 
-import com.google.inject.Module;
 import com.google.inject.AbstractModule;
+import com.google.inject.BindingAnnotation;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Module;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 import com.google.inject.util.Modules;
-
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-import com.google.inject.BindingAnnotation;
 
 public class GuiceProviderLearningTest {
 
@@ -179,7 +180,7 @@ public class GuiceProviderLearningTest {
 				bind(MyService.class).in(Singleton.class);
 			}
 		};
-		injector = Guice.createInjector(Modules.override(defaultModule).with(customModule));
+		injector = Guice.createInjector(Modules.override(defaultModule).with(customModule)); // override module
 		client1 = injector.getInstance(MyClient.class);
 		client2 = injector.getInstance(MyClient.class);
 		assertThat(client1.service).isNotNull();
