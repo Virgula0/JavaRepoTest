@@ -20,21 +20,20 @@ import com.google.inject.Inject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 
-
 public class StudentMongoRepository implements StudentRepository {
-	
+
 	@BindingAnnotation
 	@Target({ FIELD, PARAMETER, METHOD })
 	@Retention(RUNTIME)
 	public @interface MongoHost {
 	}
-	
+
 	@BindingAnnotation
 	@Target({ FIELD, PARAMETER, METHOD })
 	@Retention(RUNTIME)
 	public @interface MongoPort {
 	}
-	
+
 	@BindingAnnotation
 	@Target({ FIELD, PARAMETER, METHOD })
 	@Retention(RUNTIME)

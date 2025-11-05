@@ -6,7 +6,10 @@ import java.util.logging.Level;
 // Log4j
 import java.util.logging.Logger;
 
+import org.apache.logging.log4j.core.tools.picocli.CommandLine.ITypeConverter;
+
 import com.example.progetto.angelo.rosa.view.StudentSwingView;
+import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 
 import picocli.CommandLine;
@@ -30,28 +33,41 @@ public class MainUsingDependencyInjection implements Callable<Void> {
 	@Option(names = { "--db-collection" }, description = "Collection name")
 	private String collectionName = "student";
 
+	@Option(names = "--db", required = false, description = "Choose database type")
+	private String databaseTypeName = "mongodb";
+
+	private AbstractModule databaseModule;
+
 	public static void main(String[] args) {
 		new CommandLine(new MainUsingDependencyInjection()).execute(args);
 	}
 
+	private AbstractModule moduleChoiser() {
+		databaseModule = switch (databaseTypeName.toLowerCase()) {
+		case "mongodb" -> new SchoolSwingMongoDefaultModule().mongoHost(mongoHost).mongoPort(mongoPort)
+				.databaseName(databaseName).collectionName(collectionName);
+		// case "mysql" -> new MysqlGuice();
+		default -> throw new IllegalArgumentException("Unknown DB type: " + databaseTypeName);
+		};
+
+		return databaseModule;
+	}
+
 	@Override
 	public Void call() throws Exception {
+		databaseModule = moduleChoiser();
+
 		EventQueue.invokeLater(() -> {
 			try {
-				Guice.createInjector(new SchoolSwingMongoDefaultModule()
-						.mongoHost(mongoHost)
-						.mongoPort(mongoPort)
-						.databaseName(databaseName)
-						.collectionName(collectionName))
-				.getInstance(StudentSwingView.class)
-				.start(); // call the view start method
+				Guice.createInjector(databaseModule)
+					.getInstance(StudentSwingView.class)
+					.start(); // call the view start method
 			} catch (Exception e) {
 				Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception", e);
 			}
 		});
 		return null;
 	}
-
 	/*
 	 * My attempt
 	 * 
@@ -60,15 +76,14 @@ public class MainUsingDependencyInjection implements Callable<Void> {
 	 * 
 	 * @Override protected void configure() { // choose Mongo as database (choose
 	 * StudentMySqlRepository when switching)
-	 * bind(StudentRepository.class).annotatedWith(SchoolController.RepoType.class)
+	 * bind(StudentRepository.class).annotatedWith(SchoolController.RepoType. class)
 	 * .to(StudentMongoRepository.class);
 	 * 
 	 * // inject repository first // inject strings of database name and collection
-	 * name
-	 * bind(String.class).annotatedWith(StudentMongoRepository.DatabaseName.class)
-	 * .toInstance(databaseName);
-	 * bind(String.class).annotatedWith(StudentMongoRepository.CollectionName.class)
-	 * .toInstance(collectionName);
+	 * name bind(String.class).annotatedWith(StudentMongoRepository.DatabaseName.
+	 * class) .toInstance(databaseName);
+	 * bind(String.class).annotatedWith(StudentMongoRepository.CollectionName.
+	 * class) .toInstance(collectionName);
 	 * 
 	 * bind(MongoClient.class).toInstance(new MongoClient(new
 	 * ServerAddress(mongoHost, mongoPort)));
@@ -103,7 +118,6 @@ public class MainUsingDependencyInjection implements Callable<Void> {
 	 * create a // SchoolController // passing in the // StudentSwingView
 	 * view.setSchoolController(controller); view.setVisible(true);
 	 * controller.allStudents(); } catch (Exception e) {
-	 * Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception", e); }
-	 * }); return null; }
+	 * Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception", e);
 	 */
 }

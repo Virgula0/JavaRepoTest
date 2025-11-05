@@ -26,24 +26,25 @@ import com.google.inject.assistedinject.Assisted;
  * TIP: They can be used at controller level somehow
  * */
 public class SchoolController {
-	
+
 	@BindingAnnotation
 	@Target({ FIELD, PARAMETER, METHOD })
 	@Retention(RUNTIME)
 	public static @interface RepoType {
 	}
-	
+
 	private StudentView studentView;
 	private StudentRepository studentRepository;
 
-	// @Assisted means that we want to provide some arguments manually when creating an object
+	// @Assisted means that we want to provide some arguments manually when creating
+	// an object
 	// this is passed using .create(view); on factory method
 	@Inject
 	public SchoolController(@Assisted StudentView studentView, @RepoType StudentRepository studentRepo) {
 		this.studentView = studentView;
 		this.studentRepository = studentRepo;
 	}
-	
+
 	public void allStudents() {
 		studentView.showAllStudents(studentRepository.findAll());
 	}
