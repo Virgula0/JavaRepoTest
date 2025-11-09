@@ -52,19 +52,19 @@ public class StudentSwingView extends JFrame implements StudentView {
 	// for integration tests when will use real controller
 	public void setSchoolController(SchoolController schoolController) {
 		this.schoolController = schoolController;
-	} 
-	
+	}
+
 	// this is useful for removing cyclic dependency
 	// controller -> view -> controller
 	public SchoolController getSchoolController() {
 		return schoolController;
 	}
-	
+
 	public void start() {
 		setVisible(true);
 		schoolController.allStudents(); // so we don't need to call it from the main
 	}
-	
+
 	/**
 	 * Create the frame.
 	 */

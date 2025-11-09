@@ -151,14 +151,13 @@ public class GuiceProviderLearningTest {
 
 	private static class MyClient {
 		MyService service;
-		
+
 		@Inject
 		public MyClient(MyService service) {
 			this.service = service;
 		}
 	}
 
-	
 	// custom bindings override
 	// use Modules.override(new DefaultModule()).with(new CustomModule())
 	@Test

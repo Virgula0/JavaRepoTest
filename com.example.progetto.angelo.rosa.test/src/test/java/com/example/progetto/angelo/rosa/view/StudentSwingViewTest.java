@@ -53,7 +53,7 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> {
 			studentSwingView = new StudentSwingView();
 			studentSwingView.setSchoolController(schoolController); // important! this should be set here otherwise
-																	// doesn't work
+			// doesn't work
 			return studentSwingView;
 		});
 		window = new FrameFixture(super.robot(), studentSwingView);
@@ -65,32 +65,32 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 	protected void onTearDown() throws Exception {
 		closeable.close();
 	}
-	
+
 	@Test
 	public void assertControllerIsTheRightOne() {
 		assertThat(studentSwingView.getSchoolController()).isSameAs(schoolController).isEqualTo(schoolController);
 	}
-	
+
 	@Test
-	@GUITest 
-	public void assertStartRunsCorrectly() throws Exception{
-        // Run inside the Swing Event Dispatch Thread
-        SwingUtilities.invokeAndWait(() -> {
-        	studentSwingView.start();
-        });
-        // Verify controller interaction
-        verify(schoolController, times(1)).allStudents();
-        // Check that frame is visible
-        assertThat(studentSwingView.isVisible()).isTrue();
-        // Clean up (important for Swing tests)
-        SwingUtilities.invokeAndWait(() -> studentSwingView.dispose());
+	@GUITest
+	public void assertStartRunsCorrectly() throws Exception {
+		// Run inside the Swing Event Dispatch Thread
+		SwingUtilities.invokeAndWait(() -> {
+			studentSwingView.start();
+		});
+		// Verify controller interaction
+		verify(schoolController, times(1)).allStudents();
+		// Check that frame is visible
+		assertThat(studentSwingView.isVisible()).isTrue();
+		// Clean up (important for Swing tests)
+		SwingUtilities.invokeAndWait(() -> studentSwingView.dispose());
 	}
 
 	// BASIC TESTS
 	@Test
 	@GUITest // @GUITest you tell AssertJ Swing to take a screenshot of the desktop when a
-				// JUnit GU test fails. Screenshots of failed tests will be saved in the
-				// directory failed-gui-tests
+	// JUnit GU test fails. Screenshots of failed tests will be saved in the
+	// directory failed-gui-tests
 	public void testControlsInitialStates() {
 		window.label(JLabelMatcher.withText("id")); // id label
 		window.textBox("idTextBox").requireEnabled(); // id textbox
@@ -107,8 +107,8 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 	@GUITest
 	public void testWhenIdAndNameAreNonEmptyThenAddButtonShouldBeEnabled() {
 		window.textBox("idTextBox").enterText("1"); // be aware! we must use enterText not set text as this method
-													// emulates user input and gives the listener the possibility to
-													// intercept the event
+		// emulates user input and gives the listener the possibility to
+		// intercept the event
 		window.textBox("nameTextBox").enterText("test");
 		window.button(JButtonMatcher.withText("Add")).requireEnabled();
 	}

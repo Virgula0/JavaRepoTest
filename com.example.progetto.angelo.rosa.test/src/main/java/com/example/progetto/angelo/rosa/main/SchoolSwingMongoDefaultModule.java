@@ -16,10 +16,18 @@ public class SchoolSwingMongoDefaultModule extends AbstractModule {
 	/*
 	 * Builder pattern
 	 */
-	private String mongoHost = "localhost";
-	private int mongoPort = StudentMongoRepository.PORT;
-	private String databaseName = StudentMongoRepository.SCHOOL_DB_NAME;
-	private String collectionName = StudentMongoRepository.STUDENT_COLLECTION_NAME;
+	private String mongoHost;
+	private int mongoPort;
+	private String databaseName;
+	private String collectionName;
+
+	public SchoolSwingMongoDefaultModule defaultParams() {
+		this.mongoHost = "localhost";
+		this.mongoPort = StudentMongoRepository.PORT;
+		this.databaseName = StudentMongoRepository.SCHOOL_DB_NAME;
+		this.collectionName = StudentMongoRepository.STUDENT_COLLECTION_NAME;
+		return this;
+	}
 
 	public SchoolSwingMongoDefaultModule mongoHost(String mongoHost) {
 		this.mongoHost = mongoHost;
@@ -52,15 +60,16 @@ public class SchoolSwingMongoDefaultModule extends AbstractModule {
 		bind(String.class).annotatedWith(StudentMongoRepository.CollectionName.class).toInstance(collectionName);
 
 		// not needed as we use a provider for this
-		// bind(MongoClient.class).toInstance(new MongoClient(new ServerAddress(mongoHost, mongoPort)));
-		
+		// bind(MongoClient.class).toInstance(new MongoClient(new
+		// ServerAddress(mongoHost, mongoPort)));
+
 		bind(StudentRepository.class).to(StudentMongoRepository.class); // Whenever something requires
-																		// StudentRepository, provide a
-																		// StudentMongoRepository.
+		// StudentRepository, provide a
+		// StudentMongoRepository.
 
 		install(new FactoryModuleBuilder().implement(SchoolController.class, SchoolController.class)
 				.build(SchoolControllerFactory.class)); // Whenever a SchoolController is needed, use
-														// MyControllerFactory to build it
+		// MyControllerFactory to build it
 	}
 
 	@Provides

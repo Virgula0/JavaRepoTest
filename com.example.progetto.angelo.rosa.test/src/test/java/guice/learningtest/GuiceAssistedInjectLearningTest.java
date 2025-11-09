@@ -54,9 +54,8 @@ public class GuiceAssistedInjectLearningTest {
 	 * implementation class’ constructor. Other constructor arguments will be
 	 * injected as usual. It is then enough to use the Guice API using
 	 * FactoryModuleBuilder to have Guice implement a factory implementation
-	 * automatically
-	 * So IMyView view of MyControllerFactory is binded to @Assisted IMyView view
-	 * MyController class
+	 * automatically So IMyView view of MyControllerFactory is binded to @Assisted
+	 * IMyView view MyController class
 	 */
 
 	// factory method to create controller instances
@@ -69,17 +68,18 @@ public class GuiceAssistedInjectLearningTest {
 		Module module = new AbstractModule() {
 			@Override
 			protected void configure() {
-				bind(IMyRepository.class).to(MyRepository.class); // this is the injector that will inject the second parameter of MyController class
+				bind(IMyRepository.class).to(MyRepository.class); // this is the injector that will inject the second
+				// parameter of MyController class
 				install(new FactoryModuleBuilder().implement(IMyController.class, MyController.class) // returns both
-																										// IMyController
-																										// and MyControl
+						// IMyController
+						// and MyControl
 						.build(MyControllerFactory.class));
 			}
 		};
 		Injector injector = Guice.createInjector(module);
 		MyControllerFactory controllerFactory = injector.getInstance(MyControllerFactory.class);
 		MyController controller = (MyController) controllerFactory.create(new MyView()); // casting needed as it returns
-																						// IMyController
+		// IMyController
 
 		assertThat(controller.view).isNotNull();
 		assertThat(controller.repository).isNotNull();

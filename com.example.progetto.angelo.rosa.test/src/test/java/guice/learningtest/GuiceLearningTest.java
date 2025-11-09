@@ -64,13 +64,16 @@ public class GuiceLearningTest {
 			this.service = service;
 		}
 	}
-	
+
 	/*
-	 * | Binding Type                                 | Behavior                                                   | Result                   |
-	| ----------------------------------------------- | ---------------------------------------------------------- | ------------------------ |
-	| `bind(A.class).to(B.class)`                     | Creates a **new instance** of `B` each time, unless scoped | Different instances      |
-	| `bind(A.class).toInstance(new B())`             | Uses a **single provided instance**                        | Same instance every time |
-	| `bind(A.class).to(B.class).in(Singleton.class)` | Guice creates **one shared instance** of `B`               | Same instance every time |
+	 * | Binding Type | Behavior | Result | |
+	 * ----------------------------------------------- |
+	 * ---------------------------------------------------------- |
+	 * ------------------------ | | `bind(A.class).to(B.class)` | Creates a **new
+	 * instance** of `B` each time, unless scoped | Different instances | |
+	 * `bind(A.class).toInstance(new B())` | Uses a **single provided instance** |
+	 * Same instance every time | | `bind(A.class).to(B.class).in(Singleton.class)`
+	 * | Guice creates **one shared instance** of `B` | Same instance every time |
 	 */
 
 	/*
@@ -107,9 +110,9 @@ public class GuiceLearningTest {
 			@Override
 			protected void configure() {
 				/*
-				 * with .toInstance(new MyService2()), you own the instance. (you can manage it call methods and so on)
-				   With .in(Singleton.class), Guice owns the instance.
-				   With toInstance you bind a type on a specific instance of that type
+				 * with .toInstance(new MyService2()), you own the instance. (you can manage it
+				 * call methods and so on) With .in(Singleton.class), Guice owns the instance.
+				 * With toInstance you bind a type on a specific instance of that type
 				 */
 				bind(IMyService.class).toInstance(new MyService2());
 			}
@@ -138,31 +141,29 @@ public class GuiceLearningTest {
 		MyClient client1 = injector.getInstance(MyClient.class);
 		MyClient client2 = injector.getInstance(MyClient.class);
 		assertNotNull(client1.service);
-		
-		// this is true because getInstance returns always the same instance of the same injector since the singleton is used 
-		assertSame(client1.service, client2.service); 
+
+		// this is true because getInstance returns always the same instance of the same
+		// injector since the singleton is used
+		assertSame(client1.service, client2.service);
 	}
 
 	@Test
 	public void singletonPerInjector() {
 		/*
-		 * IMPORTANT!
-		 * This tests succeeds because
-		 * singleton scope in Guice is per Injector, not global or static.
+		 * IMPORTANT! This tests succeeds because singleton scope in Guice is per
+		 * Injector, not global or static.
 		 */
 		Module module = new AbstractModule() {
 			@Override
 			protected void configure() {
 				/*
-				 * Apply this to implementation classes when you want only one instance 
-				 * (per Injector) to be reused for all injections for that binding.
+				 * Apply this to implementation classes when you want only one instance (per
+				 * Injector) to be reused for all injections for that binding.
 				 */
 				bind(IMyService.class).to(MyService2.class).in(Singleton.class);
 			}
 		};
-		assertNotSame(
-				Guice.createInjector(module).getInstance(MyClient.class).service,
-				Guice.createInjector(module).getInstance(MyClient.class).service
-				);
+		assertNotSame(Guice.createInjector(module).getInstance(MyClient.class).service,
+				Guice.createInjector(module).getInstance(MyClient.class).service);
 	}
 }
